@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 use Validator;
+use App\Services\SmsService;
 
 
 class AuthController extends Controller
@@ -15,7 +18,8 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
@@ -24,8 +28,9 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request){
-    	$validator = Validator::make($request->all(), [
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'phone' => 'required|numeric|between:10,13',
             'password' => 'required|string|min:6',
         ]);
@@ -34,7 +39,7 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if (! $token = auth()->attempt($validator->validated())) {
+        if (!$token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -46,7 +51,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
 
         $request->validate([
             'phone' => 'required|string|between:10,13|unique:users',
@@ -60,10 +66,28 @@ class AuthController extends Controller
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
 
-        $user = User::create(array_merge(
-                    $request->all(),
-                    ['password' => bcrypt($request->password)]
-                ));
+        $user = User::create(
+            array_merge(
+                $request->all(),
+                ['password' => bcrypt($request->password)]
+            )
+        );
+        $code = rand(100000, 999999);
+        $content = 'Mã xác thực của bạn tại' . env('APP_NAME') . ' là: ' . $code . '. Vui lòng không chia sẻ mã này với bất kỳ ai.';
+        // $content = urlencode($content);
+
+        // create user verify
+        // $user->userVerify()->create([
+        //     'code' => $code,
+        //     'type' => 'sms'
+        // ]);
+
+        // // send sms
+        // $smsService = new SmsService('yLfieumHKerd_vL1ZG05O8TwIJS8iqnZ');
+        // $response = $smsService->sendSMS(['0389228496'], $content, 2, 'SMS');
+
+        // var_dump($response);
+        // exit();
 
         return response()->json([
             'message' => 'User successfully registered',
@@ -77,7 +101,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout() {
+    public function logout()
+    {
         auth()->logout();
 
         return response()->json(['message' => 'User successfully signed out']);
@@ -88,7 +113,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh() {
+    public function refresh()
+    {
         return $this->createNewToken(auth()->refresh());
     }
 
@@ -97,7 +123,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userProfile() {
+    public function userProfile()
+    {
         return response()->json(auth()->user());
     }
 
@@ -108,7 +135,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token){
+    protected function createNewToken($token)
+    {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -117,20 +145,21 @@ class AuthController extends Controller
         ]);
     }
 
-    public function changePassWord(Request $request) {
+    public function changePassWord(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|string|min:6',
             'new_password' => 'required|string|confirmed|min:6',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
         $userId = auth()->user()->id;
 
         $user = User::where('id', $userId)->update(
-                    ['password' => bcrypt($request->new_password)]
-                );
+            ['password' => bcrypt($request->new_password)]
+        );
 
         return response()->json([
             'message' => 'User successfully changed password',

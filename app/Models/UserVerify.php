@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class UserVerify extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'code',
+        'type',
+    ];
 }
