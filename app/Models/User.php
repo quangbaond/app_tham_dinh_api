@@ -79,4 +79,22 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(UserPhoneReference::class);
     }
+
+    //user_finances
+    public function userFinances()
+    {
+        return $this->hasOne(UserFinance::class);
+    }
+
+    //user_salary_statements
+    public function userSalaryStatements()
+    {
+        return $this->hasOne(UserSalaryStatement::class);
+    }
+
+    //user_phone_work_places
+    public function userPhoneWorkPlaces()
+    {
+        return $this->hasOne(UserPhoneWorkPlace::class);
+    }
 }

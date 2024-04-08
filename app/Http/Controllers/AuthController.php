@@ -31,7 +31,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|numeric|between:10,13',
+            'phone' => 'required|string|between:10,13',
             'password' => 'required|string|min:6',
         ]);
 
@@ -40,7 +40,7 @@ class AuthController extends Controller
         }
 
         if (!$token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Tài khoản hoặc mật khẩu không hợp lệ'], 401);
         }
 
         return $this->createNewToken($token);
@@ -54,7 +54,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'phone' => 'required|string|between:10,13|unique:users',
             'password' => 'required|string|min:6',
         ], [
@@ -66,14 +67,18 @@ class AuthController extends Controller
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
         $user = User::create(
             array_merge(
-                $request->all(),
+                $validator->validated(),
                 ['password' => bcrypt($request->password)]
             )
         );
-        $code = rand(100000, 999999);
-        $content = 'Mã xác thực của bạn tại' . env('APP_NAME') . ' là: ' . $code . '. Vui lòng không chia sẻ mã này với bất kỳ ai.';
+        // $code = rand(100000, 999999);
+        // $content = 'Mã xác thực của bạn tại' . env('APP_NAME') . ' là: ' . $code . '. Vui lòng không chia sẻ mã này với bất kỳ ai.';
         // $content = urlencode($content);
 
         // create user verify
@@ -91,7 +96,12 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user->with(['userIdentifications', 'userPhoneReferences'])
+            'user' => $user->with([
+                'userFinances',
+                'userSalaryStatements',
+                'userPhoneWorkPlaces',
+                'userPhoneReferences',
+            ])->first()
         ], 201);
     }
 
@@ -137,11 +147,18 @@ class AuthController extends Controller
      */
     protected function createNewToken($token)
     {
+        $user = auth()->user();
+        $user->load([
+            'userFinances',
+            'userSalaryStatements',
+            'userPhoneWorkPlaces',
+            'userPhoneReferences',
+        ]);
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => $user
         ]);
     }
 
