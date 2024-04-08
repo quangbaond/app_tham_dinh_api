@@ -91,7 +91,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user
+            'user' => $user->with(['userIdentifications', 'userPhoneReferences'])
         ], 201);
     }
 
@@ -166,7 +166,4 @@ class AuthController extends Controller
             'user' => $user,
         ], 201);
     }
-
-
-    
 }

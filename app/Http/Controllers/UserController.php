@@ -30,10 +30,10 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        
-        if($request->hasFile('mattruoc') && $request->hasFile('matsau')) {
-            $imageNameFront = 'mat-truoc-'. time() . '.' . $request->mattruoc->extension();
-            $imageNameBack = 'mat-sau-'. time() . '.' . $request->matsau->extension();
+
+        if ($request->hasFile('mattruoc') && $request->hasFile('matsau')) {
+            $imageNameFront = 'mat-truoc-' . time() . '.' . $request->mattruoc->extension();
+            $imageNameBack = 'mat-sau-' . time() . '.' . $request->matsau->extension();
 
             // $request->mattruoc->move(public_path('images'), $imageNameFront);
             // $request->matsau->move(public_path('images'), $imageNameBack);
@@ -63,6 +63,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|numeric',
+            'id_card' => 'required|string',
             'address' => 'required|string',
             'birthday' => 'required|string',
             'name' => 'required|string',
@@ -102,7 +103,7 @@ class UserController extends Controller
         $data = $request->except('phone_number_reference');
         $user->userIdentifications()->update($data);
 
-        if($request->has('phone_number_reference')) {
+        if ($request->has('phone_number_reference')) {
             $user->userPhoneReferences()->delete();
             foreach ($request->phone_number_reference as $phone) {
                 $user->userPhoneReferences()->create([
@@ -112,11 +113,10 @@ class UserController extends Controller
                 ]);
             }
         }
-        
+
         return response()->json([
             'message' => 'Cập nhật thành công',
             'user' => $user,
         ], 201);
-
     }
 }
