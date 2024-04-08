@@ -73,4 +73,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(UserIdentification::class);
     }
+
+    //user_phone_references
+    public function userPhoneReferences()
+    {
+        return $this->hasOne(UserPhoneReference::class);
+    }
 }
