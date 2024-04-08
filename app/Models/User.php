@@ -115,4 +115,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(UserMovables::class);
     }
+
+    //user_loan_amounts
+    public function userLoanAmounts()
+    {
+        return $this->hasOne(UserLoanAmount::class);
+    }
 }

@@ -165,7 +165,8 @@ class AuthController extends Controller
             'userIdentifications',
             'userLicenses',
             'userMovables',
-            'userSanEstates'
+            'userSanEstates',
+            'userLoanAmounts'
         ]);
         return response()->json([
             'access_token' => $token,
@@ -207,7 +208,8 @@ class AuthController extends Controller
             'userIdentifications',
             'userLicenses',
             'userMovables',
-            'userSanEstates'
+            'userSanEstates',
+            'userLoanAmounts'
         ]);
         return response()->json($user);
     }
