@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPhoneWorkPlace extends Model
+class UserSanEstate extends Model
 {
     use HasFactory;
+    protected $table = 'user_san_estates';
 
     protected $fillable = [
         'user_id',
-        'name',
-        'phone',
-        'relationship',
+        'dia_chi',
+        'hinh_anh',
     ];
 }

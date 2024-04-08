@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPhoneWorkPlace extends Model
+class UserMovables extends Model
 {
     use HasFactory;
+    protected $table = 'user_movables';
 
     protected $fillable = [
         'user_id',
-        'name',
-        'phone',
-        'relationship',
+        'dia_chi',
+        'hinh_anh',
+        'loai_tai_san',
     ];
 }

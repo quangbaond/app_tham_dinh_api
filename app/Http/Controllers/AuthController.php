@@ -135,7 +135,16 @@ class AuthController extends Controller
      */
     public function userProfile()
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+        $user->load([
+            'userFinances',
+            'userSalaryStatements',
+            'userPhoneWorkPlaces',
+            'userPhoneReferences',
+            'userIdentifications',
+            'userLicenses'
+        ]);
+        return response()->json($user);
     }
 
     /**
@@ -153,6 +162,10 @@ class AuthController extends Controller
             'userSalaryStatements',
             'userPhoneWorkPlaces',
             'userPhoneReferences',
+            'userIdentifications',
+            'userLicenses',
+            'userMovables',
+            'userSanEstates'
         ]);
         return response()->json([
             'access_token' => $token,
@@ -182,5 +195,20 @@ class AuthController extends Controller
             'message' => 'User successfully changed password',
             'user' => $user,
         ], 201);
+    }
+
+    public function me (Request $request) {
+        $user = auth()->user();
+        $user->load([
+            'userFinances',
+            'userSalaryStatements',
+            'userPhoneWorkPlaces',
+            'userPhoneReferences',
+            'userIdentifications',
+            'userLicenses',
+            'userMovables',
+            'userSanEstates'
+        ]);
+        return response()->json($user);
     }
 }
