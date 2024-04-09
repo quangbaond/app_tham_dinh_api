@@ -89,7 +89,7 @@ class User extends Authenticatable implements JWTSubject
     //user_salary_statements
     public function userSalaryStatements()
     {
-        return $this->hasOne(UserSalaryStatement::class);
+        return $this->hasMany(UserSalaryStatement::class);
     }
 
     //user_phone_work_places
