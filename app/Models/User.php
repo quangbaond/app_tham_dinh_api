@@ -107,18 +107,18 @@ class User extends Authenticatable implements JWTSubject
     //user_san_estates
     public function userSanEstates()
     {
-        return $this->hasOne(UserSanEstate::class);
+        return $this->hasMany(UserSanEstate::class);
     }
 
     //user_movables
     public function userMovables()
     {
-        return $this->hasOne(UserMovables::class);
+        return $this->hasMany(UserMovables::class);
     }
 
     //user_loan_amounts
     public function userLoanAmounts()
     {
-        return $this->hasOne(UserLoanAmount::class);
+        return $this->hasMany(UserLoanAmount::class);
     }
 }
