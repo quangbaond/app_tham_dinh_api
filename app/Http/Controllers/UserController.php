@@ -325,6 +325,18 @@ class UserController extends Controller
             }
         }
 
+        $user->load([
+            'userFinances',
+            'userSalaryStatements',
+            'userPhoneWorkPlaces',
+            'userPhoneReferences',
+            'userIdentifications',
+            'userLicenses',
+            'userMovables',
+            'userSanEstates',
+            'userLoanAmounts'
+        ])
+
         return response()->json([
             'message' => 'Cập nhật thành công',
             'user' => $user,

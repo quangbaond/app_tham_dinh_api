@@ -95,7 +95,7 @@ class User extends Authenticatable implements JWTSubject
     //user_phone_work_places
     public function userPhoneWorkPlaces()
     {
-        return $this->hasOne(UserPhoneWorkPlace::class);
+        return $this->hasMany(UserPhoneWorkPlace::class);
     }
 
     //user_licenses
