@@ -274,7 +274,7 @@ class UserController extends Controller
             'dia_chi_cong_ty' => 'required|string',
             'so_dien_thoai_cong_ty' => 'required|string',
             'so_dien_thoai_noi_lam_viec' => 'required|array',
-            'sao_ke_nhan_luong' => 'required|array',
+            'sao_ke_nhan_luong' => 'array|nullable',
 
         ], [
             'thu_nhap_hang_thang.required' => 'Thu nhập hàng tháng không được để trống',
@@ -287,7 +287,6 @@ class UserController extends Controller
             'so_dien_thoai_cong_ty.string' => 'Số điện thoại công ty phải là chuỗi',
             'so_dien_thoai_noi_lam_viec.required' => 'Danh sách số điện thoại nơi làm việc không được để trống',
             'so_dien_thoai_noi_lam_viec.array' => 'Danh sách số điện thoại nơi làm việc phải là mảng',
-            'sao_ke_nhan_luong.required' => 'Danh sách sao kê nhận lương không được để trống',
             'sao_ke_nhan_luong.array' => 'Danh sách sao kê nhận lương phải là mảng',
         ]);
 
