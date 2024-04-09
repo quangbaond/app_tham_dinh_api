@@ -124,7 +124,6 @@ class UserController extends Controller
             'birthday' => 'required|string',
             'name' => 'required|string',
             'address_now' => 'required|string',
-            'phone_number_reference' => 'required|array',
             'issue_date' => 'required|string',
             'msbhxh' => 'required|string',
             'facebook' => 'string',
