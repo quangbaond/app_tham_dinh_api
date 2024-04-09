@@ -362,9 +362,7 @@ class UserController extends Controller
         ));
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
         $response = curl_exec($curl);
-
         curl_close($curl);
 
         return json_decode($response, true);
@@ -391,10 +389,10 @@ class UserController extends Controller
         if ($request->has('bat_dong_san')) {
             $user->userSanEstates()->delete();
             foreach ($request->bat_dong_san as $batDongSan) {
-                $imageName = time() . '.' . $batDongSan->extension();
+                $imageName = time() . '.' . $batDongSan['hinh_anh']->extension();
                 $batDongSan->storeAs('public/images', $imageName);
                 $user->userSanEstates()->create([
-                    'images' => asset('storage/images/' . $imageName),
+                    'hinh_anh' => asset('storage/images/' . $imageName),
                     'dia_chi' => $batDongSan['dia_chi'],
                 ]);
             }
@@ -403,7 +401,7 @@ class UserController extends Controller
         if ($request->has('dong_san')) {
             $user->userMovables()->delete();
             foreach ($request->dong_san as $dongSan) {
-                $imageName = time() . '.' . $dongSan->extension();
+                $imageName = time() . '.' . $dongSan['hinh_anh']->extension();
                 $dongSan->storeAs('public/images', $imageName);
                 $user->userMovables()->create([
                     'hinh_anh' => asset('storage/images/' . $imageName),
