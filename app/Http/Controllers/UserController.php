@@ -295,7 +295,7 @@ class UserController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $user = User::find($request->user()->id);
+        $user = User::find(auth()->user()->id);
         $data = $request->except('so_dien_thoai_noi_lam_viec', 'sao_ke_nhan_luong');
         $user->userFinances()->updateOrCreate(
             ['user_id' => $user->id],
