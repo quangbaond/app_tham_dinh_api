@@ -335,7 +335,7 @@ class UserController extends Controller
             'userMovables',
             'userSanEstates',
             'userLoanAmounts'
-        ])
+        ]);
 
         return response()->json([
             'message' => 'Cập nhật thành công',
