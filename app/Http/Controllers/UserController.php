@@ -127,8 +127,8 @@ class UserController extends Controller
             'address_now' => 'required|string',
             'issue_date' => 'required|string',
             'msbhxh' => 'required|string',
-            'facebook' => 'string',
-            'zalo' => 'string',
+            'facebook' => 'string|nullable',
+            'zalo' => 'string|nullable',
             'phone_reference' => 'required|array',
         ], [
             'address.required' => 'Địa chỉ không được để trống',
