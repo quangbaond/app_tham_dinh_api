@@ -16,4 +16,9 @@ class UserLoanAmount extends Model
         'khoan_vay',
         'thoi_han_vay',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
