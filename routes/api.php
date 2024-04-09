@@ -37,3 +37,4 @@ Route::post('/update-finance', [UserController::class, 'updateFinance'])->middle
 Route::post('/update-user', [UserController::class, 'updateUser'])->middleware('auth:api');
 Route::post('/update-tai-san', [UserController::class, 'updateTaiSan'])->middleware('auth:api');
 Route::get('/get-period', [SettingController::class, 'getPeriod']);
+Route::post(('/create-loan-amount'), [UserController::class, 'createLoanAmount'])->middleware('auth:api');

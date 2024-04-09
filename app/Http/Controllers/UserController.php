@@ -435,4 +435,45 @@ class UserController extends Controller
         ], 201);
         
     }
+
+    public function createLoanAmount(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'khoan_vay' => 'required|string',
+            'thoi_han_vay' => 'required|string',
+        ], [
+            'khoan_vay.required' => 'Khoản vay không được để trống',
+            'khoan_vay.string' => 'Khoản vay phải là chuỗi',
+            'thoi_han_vay.required' => 'Thời hạn vay không được để trống',
+            'thoi_han_vay.string' => 'Thời hạn vay phải là chuỗi',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user = User::find(auth()->user()->id);
+
+        $user->userLoanAmounts()->updateOrCreate(
+            ['user_id' => $user->id],
+            $validator->validated()
+        );
+
+        $user->load([
+            'userFinances',
+            'userSalaryStatements',
+            'userPhoneWorkPlaces',
+            'userPhoneReferences',
+            'userIdentifications',
+            'userLicenses',
+            'userMovables',
+            'userSanEstates',
+            'userLoanAmounts'
+        ]);
+
+        return response()->json([
+            'message' => 'Cập nhật thành công',
+            'user' => $user,
+        ], 201);
+    }
 }
