@@ -119,6 +119,7 @@ class UserController extends Controller
 
     public function updateUser(Request $request)
     {
+        $this->middleware('auth:api');
         $validator = Validator::make($request->all(), [
             'address' => 'required|string',
             'birthday' => 'required|string',
