@@ -304,10 +304,12 @@ class UserController extends Controller
 
         if ($request->has('so_dien_thoai_noi_lam_viec')) {
             $user->userPhoneWorkPlaces()->delete();
+            
             foreach ($request->so_dien_thoai_noi_lam_viec as $phone) {
                 $user->userPhoneWorkPlaces()->create([
                     'phone' => $phone['phone'],
                     'name' => $phone['name'],
+                    'relationship' => $phone['relationship'],
                 ]);
             }
         }
