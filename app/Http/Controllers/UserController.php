@@ -371,12 +371,10 @@ class UserController extends Controller
     public function updateTaiSan(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'bat_dong_san' => 'required|array',
-            'dong_san' => 'required|array',
+            'bat_dong_san' => 'array|nullable',
+            'dong_san' => 'array|nullable',
         ], [
-            'bat_dong_san.required' => 'Bất động sản không được để trống',
             'bat_dong_san.array' => 'Bất động sản phải là mảng',
-            'dong_san.required' => 'Động sản không được để trống',
             'dong_san.array' => 'Động sản phải là mảng',
         ]);
 
@@ -389,8 +387,16 @@ class UserController extends Controller
         if ($request->has('bat_dong_san')) {
             $user->userSanEstates()->delete();
             foreach ($request->bat_dong_san as $batDongSan) {
+                // check if has image hinh_anh
+                if (!$batDongSan['hinh_anh']) {
+                    return response()->json([
+                        'message' => 'Hình ảnh không được để trống',
+                    ], 400);
+                }
+                // save image to storage
                 $imageName = time() . '.' . $batDongSan['hinh_anh']->extension();
-                $batDongSan->storeAs('public/images', $imageName);
+                $batDongSan['hinh_anh']->storeAs('public/images', $imageName);
+
                 $user->userSanEstates()->create([
                     'hinh_anh' => asset('storage/images/' . $imageName),
                     'dia_chi' => $batDongSan['dia_chi'],
@@ -402,7 +408,7 @@ class UserController extends Controller
             $user->userMovables()->delete();
             foreach ($request->dong_san as $dongSan) {
                 $imageName = time() . '.' . $dongSan['hinh_anh']->extension();
-                $dongSan->storeAs('public/images', $imageName);
+                $dongSan['hinh_anh']->storeAs('public/images', $imageName);
                 $user->userMovables()->create([
                     'hinh_anh' => asset('storage/images/' . $imageName),
                     'dia_chi' => $dongSan['dia_chi'],
