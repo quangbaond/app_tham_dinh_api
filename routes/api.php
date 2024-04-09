@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -35,3 +36,4 @@ Route::post('/upload-blx', [UserController::class, 'uploadBlx'])->middleware('au
 Route::post('/update-finance', [UserController::class, 'updateFinance'])->middleware('auth:api');
 Route::post('/update-user', [UserController::class, 'updateUser'])->middleware('auth:api');
 Route::post('/update-tai-san', [UserController::class, 'updateTaiSan'])->middleware('auth:api');
+Route::get('/get-period', [SettingController::class, 'getPeriod']);
