@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('user_loan_amounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->integer('khoan_vay');
+            $table->bigInteger('khoan_vay');
             $table->string('thoi_han_vay');
+            $table->integer('status')->comment('0: Chờ duyệt, 1: Đã duyệt, 2: Từ chối')->default(0);
             $table->timestamps();
         });
     }
