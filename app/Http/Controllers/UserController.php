@@ -265,7 +265,69 @@ class UserController extends Controller
         ], 201);
     }
 
+    public function updateFinance(Request $request)
+    {
+        $this->middleware('auth:api');
+        $validator = Validator::make($request->all(), [
+            'thu_nhap_hang_thang' => 'required|string',
+            'ten_cong_ty' => 'required|string',
+            'dia_chi_cong_ty' => 'required|string',
+            'so_dien_thoai_cong_ty' => 'required|string',
+            'so_dien_thoai_noi_lam_viec' => 'required|array',
+            'sao_ke_nhan_luong' => 'required|array',
 
+        ], [
+            'thu_nhap_hang_thang.required' => 'Thu nhập hàng tháng không được để trống',
+            'thu_nhap_hang_thang.string' => 'Thu nhập hàng tháng phải là chuỗi',
+            'ten_cong_ty.required' => 'Tên công ty không được để trống',
+            'ten_cong_ty.string' => 'Tên công ty phải là chuỗi',
+            'dia_chi_cong_ty.required' => 'Địa chỉ công ty không được để trống',
+            'dia_chi_cong_ty.string' => 'Địa chỉ công ty phải là chuỗi',
+            'so_dien_thoai_cong_ty.required' => 'Số điện thoại công ty không được để trống',
+            'so_dien_thoai_cong_ty.string' => 'Số điện thoại công ty phải là chuỗi',
+            'so_dien_thoai_noi_lam_viec.required' => 'Danh sách số điện thoại nơi làm việc không được để trống',
+            'so_dien_thoai_noi_lam_viec.array' => 'Danh sách số điện thoại nơi làm việc phải là mảng',
+            'sao_ke_nhan_luong.required' => 'Danh sách sao kê nhận lương không được để trống',
+            'sao_ke_nhan_luong.array' => 'Danh sách sao kê nhận lương phải là mảng',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user = User::find($request->user()->id);
+        $data = $request->except('so_dien_thoai_noi_lam_viec', 'sao_ke_nhan_luong');
+        $user->userFinances()->updateOrCreate(
+            ['user_id' => $user->id],
+            $data
+        );
+
+        if ($request->has('so_dien_thoai_noi_lam_viec')) {
+            $user->userPhoneWorkPlaces()->delete();
+            foreach ($request->so_dien_thoai_noi_lam_viec as $phone) {
+                $user->userPhoneWorkPlaces()->create([
+                    'phone' => $phone['phone'],
+                    'name' => $phone['name'],
+                ]);
+            }
+        }
+
+        if ($request->has('sao_ke_nhan_luong')) {
+            $user->userSalaryStatements()->delete();
+            foreach ($request->sao_ke_nhan_luong as $saoKe) {
+                $imageName = time() . '.' . $saoKe->extension();
+                $saoKe->storeAs('public/images', $imageName);
+                $user->userSalaryStatements()->create([
+                    'images' => asset('storage/images/' . $imageName),
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Cập nhật thành công',
+            'user' => $user,
+        ], 201);
+    }
 
 
     public function uploadAPI($fileName, $url)

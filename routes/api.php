@@ -32,4 +32,5 @@ Route::group([ 'middleware' => 'api','prefix' => 'auth'], function ($router) {
 
 Route::post('/upload-cccd', [UserController::class, 'uploadCccd']);
 Route::post('/upload-blx', [UserController::class, 'uploadBlx']);
+Route::post('/update-finance', [UserController::class, 'updateFinance']);
 Route::post('/update-user', [UserController::class, 'updateUser']);
