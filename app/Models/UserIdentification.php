@@ -11,14 +11,16 @@ class UserIdentification extends Model
 
     protected $fillable = [
         'user_id',
+        'id_card',
         'address',
         'birthday',
         'name',
         'sex',
-        'national',
+        'nationality',
         'religion',
         'doe',
         'issue_date',
+        'features',
         'image_front',
         'image_back',
     ];
