@@ -199,7 +199,8 @@ class AuthController extends Controller
     }
 
     public function me (Request $request) {
-        $user = auth()->user();
+        $user = User::find($request->user()->id);
+
         $user->load([
             'userFinances',
             'userSalaryStatements',

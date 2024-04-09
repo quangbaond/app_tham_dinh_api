@@ -16,4 +16,9 @@ class UserMovables extends Model
         'hinh_anh',
         'loai_tai_san',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

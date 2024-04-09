@@ -35,31 +35,29 @@ class UserController extends Controller
             // save image to storage
             $request->image_front->storeAs('public/images', $imageNameFront);
 
-            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameFront));
+            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameFront), env('API_URL_CCCD'));
 
             if ($response['errorCode'] === 0) {
                 $data =  $response['data'][0];
 
-                if ($data['id'] === null || $data['type'] === null) {
+                if ($data['type'] === 'new' || $data['type'] === 'old') {
+
+                    $user = User::find($request->user()->id);
+
+                    $user->userIdentifications()->updateOrCreate(
+                        ['user_id' => $user->id],
+                        // thay the id bang $data = id_card
+                        array_merge($data, [
+                            'id_card' => $data['id'],
+                            'birrthday' => $data['dob'],
+                            'image_front' => asset('storage/images/' . $imageNameFront),
+                        ])
+                    );
+                } else {
                     return response()->json([
-                        'message' => 'Tải lên thất bại',
+                        'message' => 'Vui lòng tải lên ảnh mặt trước',
                     ], 400);
                 }
-
-                $user = User::find($request->user()->id);
-
-                // $user->userIdentifications()->create($data);
-
-                // create or update user identification
-                $user->userIdentifications()->updateOrCreate(
-                    ['user_id' => $user->id],
-                    // thay the id bang $data = id_card
-                    array_merge($data, [
-                        'id_card' => $data['id'],
-                        'birrthday' => $data['dob'],
-                        'image_front' => asset('storage/images/' . $imageNameFront),
-                    ])
-                );
 
                 return response()->json([
                     'message' => 'Tải lên thành công',
@@ -71,34 +69,35 @@ class UserController extends Controller
                     'message' => 'Tải lên thất bại',
                 ], 400);
             }
-        } elseif($request->hasFile('image_back')) {
-            
+        } elseif ($request->hasFile('image_back')) {
+
             $imageNameBack = time() . '.' . $request->image_back->extension();
 
             // save image to storage
             $request->image_back->storeAs('public/images', $imageNameBack);
 
-            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameBack));
+            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameBack), env('API_URL_CCCD'));
 
             if ($response['errorCode'] === 0) {
                 $data =  $response['data'][0];
 
-                if ($data['id'] === null || $data['type'] === null) {
+                if ($data['type'] === 'old_back' || $data['type'] === 'new_back') {
+
+                    $user = User::find($request->user()->id);
+
+                    $user->userIdentifications()->updateOrCreate(
+                        ['user_id' => $user->id],
+                        // thay the id bang $data = id_card
+                        array_merge($data, [
+                            'issue_date' => $data['doe'],
+                            'image_back' => asset('storage/images/' . $imageNameBack),
+                        ])
+                    );
+                } else {
                     return response()->json([
-                        'message' => 'Tải lên thất bại',
+                        'message' => 'Vui lòng tải lên ảnh mặt sau',
                     ], 400);
                 }
-
-                $user = User::find($request->user()->id);
-
-                $user->userIdentifications()->updateOrCreate(
-                    ['user_id' => $user->id],
-                    // thay the id bang $data = id_card
-                    array_merge($data, [
-                        'issue_date' => $data['doe'],
-                        'image_back' => asset('storage/images/' . $imageNameBack),
-                    ])
-                );
 
                 return response()->json([
                     'message' => 'Tải lên thành công',
@@ -114,6 +113,95 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Ảnh không được để trống',
             ], 400);
+        }
+    }
+
+    public function uploadBLX(Request $request)
+    {
+        $this->middleware('auth:api');
+        $validator = Validator::make($request->all(), [
+            'image_front' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
+            'image_back' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
+        ], [
+            'image.image' => 'Ảnh phải là định dạng ảnh',
+            'image.mimes' => 'Ảnh phải là định dạng jpeg, png, jpg, gif, svg',
+            'image.max' => 'Ảnh không được vượt quá 2MB',
+            'image_back.image' => 'Ảnh phải là định dạng ảnh',
+            'image_back.mimes' => 'Ảnh phải là định dạng jpeg, png, jpg, gif, svg',
+            'image_back.max' => 'Ảnh không được vượt quá 2MB',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if ($request->hasFile('image_front')) {
+            $imageNameFront = time() . '.' . $request->image_front->extension();
+
+            // save image to storage
+            $request->image_front->storeAs('public/images', $imageNameFront);
+
+            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameFront), env('API_URL_BLX'));
+
+            if ($response['errorCode'] === 0) {
+                $data = $response['data'][0];
+                if ($data['type'] == 'New-front' || $data['type'] == 'Old-front') {
+                    $user = User::find($request->user()->id);
+
+                    $user->userLicenses()->updateOrCreate(
+                        ['user_id' => $user->id],
+                        array_merge($data, [
+                            'id_card' => $data['id'],
+                            'image_front' => asset('storage/images/' . $imageNameFront),
+                        ])
+                    );
+
+                    return response()->json([
+                        'message' => 'Tải lên thành công',
+                        'user' => $user,
+                        'data' => $data
+                    ], 201);
+                } else {
+                    return response()->json([
+                        'message' => 'Vui lòng tải lên ảnh mặt trước',
+                    ], 400);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'Tải lên thất bại',
+                ], 400);
+            }
+        } elseif ($request->hasFile('image_back')) {
+            $imageNameBack = time() . '.' . $request->image_back->extension();
+
+            // save image to storage
+            $request->image_back->storeAs('public/images', $imageNameBack);
+
+            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameBack), env('API_URL_BLX'));
+
+            if ($response['errorCode'] === 0) {
+                $data = $response['data'][0];
+
+                if ($data['type'] === 'New-back' || $data['type'] === 'Old-back') {
+                    $user = User::find($request->user()->id);
+
+                    $user->userLicenses()->updateOrCreate(
+                        ['user_id' => $user->id],
+                        array_merge($data, [
+                            'image_back' => asset('storage/images/' . $imageNameBack),
+                            'type' => $data['type'],
+                        ])
+                    );
+                } else {
+                    return response()->json([
+                        'message' => 'Vui lòng tải lên ảnh mặt sau',
+                    ], 400);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'Tải lên thất bại',
+                ], 400);
+            }
         }
     }
 
@@ -177,7 +265,10 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function uploadAPI($fileName)
+
+
+
+    public function uploadAPI($fileName, $url)
     {
         $curl = curl_init();
 
@@ -187,7 +278,7 @@ class UserController extends Controller
         $data = array("image" => $cFile, "filename" => $cFile->postname);
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('API_URL_CCCD'),
+            CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => $data,
             CURLOPT_HTTPHEADER => array(

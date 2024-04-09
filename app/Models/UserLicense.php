@@ -11,6 +11,7 @@ class UserLicense extends Model
 
     protected $fillable = [
         'user_id',
+        'id_card',
         'code',
         'type',
         'class',

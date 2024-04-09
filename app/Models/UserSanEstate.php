@@ -15,4 +15,9 @@ class UserSanEstate extends Model
         'dia_chi',
         'hinh_anh',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

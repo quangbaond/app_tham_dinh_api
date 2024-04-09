@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('user_licenses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('id_card')->nullable();
             $table->string('code')->nullable();
             $table->string('type')->nullable();
             $table->string('class')->nullable();
             $table->string('address')->nullable();
             $table->string('dob')->nullable();
             $table->string('name')->nullable();
-            $table->dateTime('date')->nullable();
+            $table->string('date')->nullable();
             $table->string('place_issue')->nullable();
             $table->string('image_front')->nullable();
             $table->string('image_back')->nullable();

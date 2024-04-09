@@ -25,10 +25,11 @@ Route::group([ 'middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/me', [AuthController::class, 'userProfile']); 
+    Route::get('/me', [AuthController::class, 'me']); 
     // Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);  
 
 });
 
 Route::post('/upload-cccd', [UserController::class, 'uploadCccd']);
+Route::post('/upload-blx', [UserController::class, 'uploadBlx']);
 Route::post('/update-user', [UserController::class, 'updateUser']);
