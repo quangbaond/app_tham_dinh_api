@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->bigInteger('khoan_vay');
             $table->string('thoi_han_vay');
-            $table->integer('status')->comment('0: Chờ duyệt, 1: Đã duyệt, 2: Từ chối')->default(0);
+            $table->integer('status')->comment('0: Chờ duyệt, 1: Đã duyệt, 2: Từ chối, 3: chưa hoàn thành, 4: hoàn thành')->default(0);
             $table->timestamps();
         });
     }

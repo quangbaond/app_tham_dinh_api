@@ -21,4 +21,9 @@ class UserLoanAmount extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function userHistoryLoanAmounts()
+    {
+        return $this->hasMany(UserHistoryLoanAmount::class);
+    }
 }

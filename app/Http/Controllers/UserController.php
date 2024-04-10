@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SettingPeriod;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\User;
@@ -38,7 +39,7 @@ class UserController extends Controller
             $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameFront), env('API_URL_CCCD'));
 
             if ($response['errorCode'] === 0) {
-                $data =  $response['data'][0];
+                $data = $response['data'][0];
 
                 if ($data['type'] === 'new' || $data['type'] === 'old') {
 
@@ -79,7 +80,7 @@ class UserController extends Controller
             $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameBack), env('API_URL_CCCD'));
 
             if ($response['errorCode'] === 0) {
-                $data =  $response['data'][0];
+                $data = $response['data'][0];
 
                 if ($data['type'] === 'old_back' || $data['type'] === 'new_back') {
 
@@ -303,7 +304,7 @@ class UserController extends Controller
 
         if ($request->has('so_dien_thoai_noi_lam_viec')) {
             $user->userPhoneWorkPlaces()->delete();
-            
+
             foreach ($request->so_dien_thoai_noi_lam_viec as $phone) {
                 $user->userPhoneWorkPlaces()->create([
                     'phone' => $phone['phone'],
@@ -433,7 +434,7 @@ class UserController extends Controller
             'message' => 'Cập nhật thành công',
             'user' => $user,
         ], 201);
-        
+
     }
 
     public function createLoanAmount(Request $request)
@@ -452,12 +453,34 @@ class UserController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+
         $user = User::find(auth()->user()->id);
 
-        $user->userLoanAmounts()->updateOrCreate(
+        // check xem có khoản vay nào chưa duyệt không
+        $userLoanAmount = $user->userLoanAmounts()->where('status', 0)->first();
+        if ($userLoanAmount) {
+            return response()->json([
+                'message' => 'Bạn có 1 khoản vay chưa được duyệt',
+            ], 400);
+        }
+
+        // check xem có khoản vay nào chưa hoàn thành
+        $userLoanAmount = $user->userLoanAmounts()->where('status', 3)->first();
+        if ($userLoanAmount) {
+            return response()->json([
+                'message' => 'Bạn có 1 khoản vay chưa hoàn thành',
+            ], 400);
+        }
+
+        $userLoanAmount = $user->userLoanAmounts()->updateOrCreate(
             ['user_id' => $user->id],
             $validator->validated()
         );
+
+        $phantram = SettingPeriod::where('title', $request->thoi_han_vay)->first()->value;
+
+        $lichtra = $this->tinhlai($userLoanAmount->khoan_vay, $userLoanAmount->thoi_han_vay, $phantram);
+        $userLoanAmount->userHistoryLoanAmounts()->createMany($lichtra);
 
         $user->load([
             'userFinances',
@@ -475,5 +498,37 @@ class UserController extends Controller
             'message' => 'Cập nhật thành công',
             'user' => $user,
         ], 201);
+    }
+
+    protected function tinhlai($khoanvay, $thoihanvay, $phantram)
+    {
+        $laixuat = $phantram / 12;
+        $goc = $khoanvay;
+        $thoihan = str_split($thoihanvay)[0];
+        $lichtra = [];
+        $goc_con_lai = $goc;
+        $goc_moi_ky = $goc / $thoihan;
+        $lai = 0;
+        $tong_goc_lai = 0;
+
+        for ($i = 0; $i <= $thoihan; $i++) {
+            echo 'laixuat ' . $laixuat . "\n";
+            $lai = $goc_con_lai * $laixuat / 100;
+            $tong_goc_lai = $goc_moi_ky + $lai;
+            $goc_con_lai = $goc_con_lai - $goc_moi_ky;
+            $date = date('Y-m-d', strtotime("+$i months"));
+            $lichtra[] = [
+                'ngay_tra' => $date,
+                'so_tien_tra' => 0,
+                'so_goc_con_no' => number_format($goc_con_lai, 0, '', ','),
+                'so_tien_lai' => number_format($lai, 0, '', ','),
+                'tong_goc_lai' => number_format($tong_goc_lai, 0, '', ','),
+                'status' => 0,
+                'status_1' => 0,
+                'status_2' => 0,
+                'status_3' => 0,
+            ];
+        }
+        return $lichtra;
     }
 }
