@@ -520,9 +520,9 @@ class UserController extends Controller
             $lichtra[] = [
                 'ngay_tra' => $date,
                 'so_tien_tra' => 0,
-                'so_goc_con_no' => number_format($goc_con_lai, 0, '', ','),
-                'so_tien_lai' => number_format($lai, 0, '', ','),
-                'tong_goc_lai' => number_format($tong_goc_lai, 0, '', ','),
+                'so_goc_con_no' => $goc_con_lai,
+                'so_tien_lai' => $lai,
+                'tong_goc_lai' => $tong_goc_lai,
                 'status' => 0,
                 'status_1' => 0,
                 'status_2' => 0,
