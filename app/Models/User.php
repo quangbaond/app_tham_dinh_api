@@ -77,7 +77,7 @@ class User extends Authenticatable implements JWTSubject
     //user_phone_references
     public function userPhoneReferences()
     {
-        return $this->hasOne(UserPhoneReference::class);
+        return $this->hasMany(UserPhoneReference::class);
     }
 
     //user_finances
