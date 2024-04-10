@@ -23,6 +23,12 @@ class UserIdentification extends Model
         'features',
         'image_front',
         'image_back',
+        'msbhxh',
+        'facebook',
+        'zalo',
+        'address_now',
+        'status',
+        'role'
     ];
 
     public function user()
