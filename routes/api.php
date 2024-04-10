@@ -26,8 +26,8 @@ Route::group([ 'middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/me', [AuthController::class, 'me']); 
-    // Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);  
+    Route::get('/me', [AuthController::class, 'me']);
+    // Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 
 });
 
@@ -38,3 +38,4 @@ Route::post('/update-user', [UserController::class, 'updateUser'])->middleware('
 Route::post('/update-tai-san', [UserController::class, 'updateTaiSan'])->middleware('auth:api');
 Route::get('/get-period', [SettingController::class, 'getPeriod']);
 Route::post(('/create-loan-amount'), [UserController::class, 'createLoanAmount'])->middleware('auth:api');
+Route::post(('/get-user-load-amount'), [UserController::class, 'getUserLoanAmount'])->middleware('auth:api');

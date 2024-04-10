@@ -574,4 +574,23 @@ class UserController extends Controller
         }
         return $lichtra;
     }
+
+    public function getUserLoanAmount(Request $request, $id)
+    {
+        $this->middleware('auth:api');
+        $user = User::find(auth()->user()->id);
+        $userLoanAmount = $user->userLoanAmounts()->where('id', $id)->first();
+        if (!$userLoanAmount) {
+            return response()->json([
+                'message' => 'Không tìm thấy khoản vay',
+            ], 404);
+        }
+
+        $userLoanAmount->load('userHistoryLoanAmounts');
+
+        return response()->json([
+            'message' => 'Thành công',
+            'userLoanAmount' => $userLoanAmount,
+        ], 200);
+    }
 }
