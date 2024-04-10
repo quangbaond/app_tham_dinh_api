@@ -425,7 +425,7 @@ class UserController extends Controller
                     $imageName = time() . '.' . $dongSan['hinh_anh']->extension();
                     $dongSan['hinh_anh']->storeAs('public/images', $imageName);
 
-                    $user->userSanEstates()->updateOrCreate(
+                    $user->userMovables()->updateOrCreate(
                         ['user_id' => $user->id],
                         [
                             'hinh_anh' => asset('storage/images/' . $imageName),
@@ -434,7 +434,7 @@ class UserController extends Controller
                         ]
                     );
                 } else {
-                    $user->userSanEstates()->updateOrCreate(
+                    $user->userMovables()->updateOrCreate(
                         ['user_id' => $user->id],
                         [
                             'dia_chi' => $dongSan['dia_chi'],
