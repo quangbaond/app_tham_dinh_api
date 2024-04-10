@@ -504,7 +504,7 @@ class UserController extends Controller
     {
         $laixuat = $phantram / 12;
         $goc = $khoanvay;
-        $thoihan = str_split($thoihanvay)[0];
+        $thoihan = (int)str_replace(' tháng', '', $thoihanvay);
         $lichtra = [];
         $goc_con_lai = $goc;
         $goc_moi_ky = $goc / $thoihan;
@@ -512,7 +512,6 @@ class UserController extends Controller
         $tong_goc_lai = 0;
 
         for ($i = 0; $i <= $thoihan; $i++) {
-            echo 'laixuat ' . $laixuat . "\n";
             $lai = $goc_con_lai * $laixuat / 100;
             $tong_goc_lai = $goc_moi_ky + $lai;
             $goc_con_lai = $goc_con_lai - $goc_moi_ky;
