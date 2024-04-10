@@ -511,7 +511,7 @@ class UserController extends Controller
         $lai = 0;
         $tong_goc_lai = 0;
 
-        for ($i = 0; $i <= $thoihan; $i++) {
+        for ($i = 1; $i <= $thoihan; $i++) {
             $lai = $goc_con_lai * $laixuat / 100;
             $tong_goc_lai = $goc_moi_ky + $lai;
             $goc_con_lai = $goc_con_lai - $goc_moi_ky;
