@@ -210,7 +210,8 @@ class AuthController extends Controller
             'userLicenses',
             'userMovables',
             'userSanEstates',
-            'userLoanAmounts'
+            'userLoanAmounts',
+            'userHistoryLoanAmounts'
         ]);
         return response()->json($user);
     }

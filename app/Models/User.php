@@ -121,4 +121,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(UserLoanAmount::class);
     }
+
+    //user_history_loan_amounts
+    public function userHistoryLoanAmounts()
+    {
+        // số nhiều thong qua bang user_loan_amounts
+        return $this->hasManyThrough(UserHistoryLoanAmount::class, UserLoanAmount::class);
+
+    }
 }
