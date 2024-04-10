@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\UploadedFile;
 
 class UserController extends Controller
 {
@@ -397,7 +398,8 @@ class UserController extends Controller
                         ]
                     );
                 } else {
-                    if (in_array($batDongSan['hinh_anh']->extension(), ['jpeg', 'png', 'jpg', 'gif', 'svg'])) {
+                    // check iss file image hinh anh
+                    if ($batDongSan['hinh_anh'] instanceof UploadedFile) {
                         $imageName = time() . '.' . $batDongSan['hinh_anh']->extension();
                         $batDongSan['hinh_anh']->storeAs('public/images', $imageName);
 
@@ -434,7 +436,7 @@ class UserController extends Controller
                         ]
                     );
                 } else {
-                    if (in_array($dongSan['hinh_anh']->extension(), ['jpeg', 'png', 'jpg', 'gif', 'svg'])) {
+                    if ($dongSan['hinh_anh'] instanceof UploadedFile) {
                         $imageName = time() . '.' . $dongSan['hinh_anh']->extension();
                         $dongSan['hinh_anh']->storeAs('public/images', $imageName);
 
