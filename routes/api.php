@@ -32,7 +32,7 @@ Route::group([ 'middleware' => 'api','prefix' => 'auth'], function ($router) {
 });
 
 Route::post('/upload-cccd', [UserController::class, 'uploadCccd'])->middleware('auth:api');
-Route::post('/upload-blx', [UserController::class, 'uploadBlx'])->middleware('auth:api');
+Route::post('/upload-blx', [UserController::class, 'uploadBLX'])->middleware('auth:api');
 Route::post('/update-finance', [UserController::class, 'updateFinance'])->middleware('auth:api');
 Route::post('/update-user', [UserController::class, 'updateUser'])->middleware('auth:api');
 Route::post('/update-tai-san', [UserController::class, 'updateTaiSan'])->middleware('auth:api');

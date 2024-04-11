@@ -30,9 +30,6 @@ class UserIdentificationsResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->label('Họ và tên')
                             ->required(),
-                        Forms\Components\TextInput::make('phone')
-                            ->label('Số điện thoại')
-                            ->required(),
                         Forms\Components\TextInput::make('id_card')
                             ->label('CCCD')
                             ->required(),
@@ -45,6 +42,7 @@ class UserIdentificationsResource extends Resource
                             ->required(),
                         // file upload
                         Forms\Components\FileUpload::make('image_front')
+                            ->storeFiles(false)
                             ->label('Ảnh CCCD')
                             ->image()
                             ->required(),

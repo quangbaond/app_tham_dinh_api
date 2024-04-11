@@ -87,7 +87,7 @@ class UserController extends Controller
                         'image_back' => asset('storage/images/' . $imageNameBack),
                     ])
                 );
-                
+
 
                 return response()->json([
                     'message' => 'Tải lên thành công',
@@ -135,14 +135,13 @@ class UserController extends Controller
 
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
-                if ($data['type'] == 'New-front' || $data['type'] == 'Old-front') {
                     $user = User::find($request->user()->id);
 
                     $user->userLicenses()->updateOrCreate(
                         ['user_id' => $user->id],
                         array_merge($data, [
                             'id_card' => $data['id'],
-                            'image_front' => asset('storage/images/' . $imageNameFront),
+                            'image_back' => asset('storage/images/' . $imageNameFront),
                         ])
                     );
 
@@ -151,11 +150,6 @@ class UserController extends Controller
                         'user' => $user,
                         'data' => $data
                     ], 201);
-                } else {
-                    return response()->json([
-                        'message' => 'Vui lòng tải lên ảnh mặt trước',
-                    ], 400);
-                }
             } else {
                 return response()->json([
                     'message' => 'Tải lên thất bại',
@@ -172,7 +166,6 @@ class UserController extends Controller
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
 
-                if ($data['type'] === 'New-back' || $data['type'] === 'Old-back') {
                     $user = User::find($request->user()->id);
 
                     $user->userLicenses()->updateOrCreate(
@@ -182,16 +175,15 @@ class UserController extends Controller
                             'type' => $data['type'],
                         ])
                     );
-                } else {
-                    return response()->json([
-                        'message' => 'Vui lòng tải lên ảnh mặt sau',
-                    ], 400);
-                }
             } else {
                 return response()->json([
                     'message' => 'Tải lên thất bại',
                 ], 400);
             }
+        } else {
+            return response()->json([
+                'message' => 'Ảnh không được để trống',
+            ], 400);
         }
     }
 
