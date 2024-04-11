@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->tinyInteger('role')->default(0)->comment('0: user, 1: admin, 2: super admin, 3: service');
             $table->tinyInteger('status')->default(1)->comment('0: inactive, 1: active');
+            $table->tinyInteger('status_1')->default(0)->comment('0: chưa thẩm định, 1: đã thẩm định');
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

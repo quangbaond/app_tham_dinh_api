@@ -42,24 +42,19 @@ class UserController extends Controller
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
 
-                if ($data['type'] === 'new' || $data['type'] === 'old') {
 
-                    $user = User::find($request->user()->id);
+                $user = User::find($request->user()->id);
 
-                    $user->userIdentifications()->updateOrCreate(
-                        ['user_id' => $user->id],
-                        // thay the id bang $data = id_card
-                        array_merge($data, [
-                            'id_card' => $data['id'],
-                            'birrthday' => $data['dob'],
-                            'image_front' => asset('storage/images/' . $imageNameFront),
-                        ])
-                    );
-                } else {
-                    return response()->json([
-                        'message' => 'Vui lòng tải lên ảnh mặt trước',
-                    ], 400);
-                }
+                $user->userIdentifications()->updateOrCreate(
+                    ['user_id' => $user->id],
+                    // thay the id bang $data = id_card
+                    array_merge($data, [
+                        'id_card' => $data['id'],
+                        'birrthday' => $data['dob'],
+                        'image_front' => asset('storage/images/' . $imageNameFront),
+                    ])
+                );
+
 
                 return response()->json([
                     'message' => 'Tải lên thành công',
@@ -82,24 +77,17 @@ class UserController extends Controller
 
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
+                $user = User::find($request->user()->id);
 
-                if ($data['type'] === 'old_back' || $data['type'] === 'new_back') {
-
-                    $user = User::find($request->user()->id);
-
-                    $user->userIdentifications()->updateOrCreate(
-                        ['user_id' => $user->id],
-                        // thay the id bang $data = id_card
-                        array_merge($data, [
-                            'issue_date' => $data['doe'],
-                            'image_back' => asset('storage/images/' . $imageNameBack),
-                        ])
-                    );
-                } else {
-                    return response()->json([
-                        'message' => 'Vui lòng tải lên ảnh mặt sau',
-                    ], 400);
-                }
+                $user->userIdentifications()->updateOrCreate(
+                    ['user_id' => $user->id],
+                    // thay the id bang $data = id_card
+                    array_merge($data, [
+                        'issue_date' => $data['doe'],
+                        'image_back' => asset('storage/images/' . $imageNameBack),
+                    ])
+                );
+                
 
                 return response()->json([
                     'message' => 'Tải lên thành công',

@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('facebook')->nullable();
             $table->string('zalo')->nullable();
             $table->string('msbhxh')->nullable();
+            $table->tinyInteger('status')->default(0)->comment('0: Chưa thẩm định, 1: Đã thẩm định');
             $table->timestamps();
         });
     }
