@@ -141,7 +141,7 @@ class UserController extends Controller
                         ['user_id' => $user->id],
                         array_merge($data, [
                             'id_card' => $data['id'],
-                            'image_back' => asset('storage/images/' . $imageNameFront),
+                            'image_front' => asset('storage/images/' . $imageNameFront),
                         ])
                     );
 
@@ -171,6 +171,7 @@ class UserController extends Controller
                     $user->userLicenses()->updateOrCreate(
                         ['user_id' => $user->id],
                         array_merge($data, [
+                            'class' => $data['class'],
                             'image_back' => asset('storage/images/' . $imageNameBack),
                             'type' => $data['type'],
                         ])
