@@ -1,3 +1,1 @@
-/*
-  Add custom scripts here
-*/
+import './bootstrap';

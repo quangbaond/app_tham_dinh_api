@@ -1,120 +1,192 @@
 <?php
 
+use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\ServiceProvider;
+
 return [
 
-  /*
-  |--------------------------------------------------------------------------
-  | Authentication Defaults
-  |--------------------------------------------------------------------------
-  |
-  | This option controls the default authentication "guard" and password
-  | reset options for your application. You may change these defaults
-  | as required, but they're a perfect start for most applications.
-  |
-  */
+    /*
+    |--------------------------------------------------------------------------
+    | Application Name
+    |--------------------------------------------------------------------------
+    |
+    | This value is the name of your application. This value is used when the
+    | framework needs to place the application's name in a notification or
+    | any other location as required by the application or its packages.
+    |
+    */
 
-  'defaults' => [
-    'guard' => 'api',
-    'passwords' => 'users',
-  ],
+    'name' => env('APP_NAME', 'Laravel'),
 
-  /*
-  |--------------------------------------------------------------------------
-  | Authentication Guards
-  |--------------------------------------------------------------------------
-  |
-  | Next, you may define every authentication guard for your application.
-  | Of course, a great default configuration has been defined for you
-  | here which uses session storage and the Eloquent user provider.
-  |
-  | All authentication drivers have a user provider. This defines how the
-  | users are actually retrieved out of your database or other storage
-  | mechanisms used by this application to persist your user's data.
-  |
-  | Supported: "session"
-  |
-  */
+    /*
+    |--------------------------------------------------------------------------
+    | Application Environment
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "environment" your application is currently
+    | running in. This may determine how you prefer to configure various
+    | services the application utilizes. Set this in your ".env" file.
+    |
+    */
 
-  'guards' => [
-    'web' => [
-      'driver' => 'session',
-      'provider' => 'users',
+    'env' => env('APP_ENV', 'production'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Debug Mode
+    |--------------------------------------------------------------------------
+    |
+    | When your application is in debug mode, detailed error messages with
+    | stack traces will be shown on every error that occurs within your
+    | application. If disabled, a simple generic error page is shown.
+    |
+    */
+
+    'debug' => (bool) env('APP_DEBUG', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application URL
+    |--------------------------------------------------------------------------
+    |
+    | This URL is used by the console to properly generate URLs when using
+    | the Artisan command line tool. You should set this to the root of
+    | your application so that it is used when running Artisan tasks.
+    |
+    */
+
+    'url' => env('APP_URL', 'http://localhost'),
+
+    'asset_url' => env('ASSET_URL'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Timezone
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the default timezone for your application, which
+    | will be used by the PHP date and date-time functions. We have gone
+    | ahead and set this to a sensible default for you out of the box.
+    |
+    */
+
+    'timezone' => 'Asia/Ho_Chi_Minh',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Locale Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The application locale determines the default locale that will be used
+    | by the translation service provider. You are free to set this value
+    | to any of the locales which will be supported by the application.
+    |
+    */
+
+    'locale' => 'vi',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Fallback Locale
+    |--------------------------------------------------------------------------
+    |
+    | The fallback locale determines the locale to use when the current one
+    | is not available. You may change the value to correspond to any of
+    | the language folders that are provided through your application.
+    |
+    */
+
+    'fallback_locale' => 'vi',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Faker Locale
+    |--------------------------------------------------------------------------
+    |
+    | This locale will be used by the Faker PHP library when generating fake
+    | data for your database seeds. For example, this will be used to get
+    | localized telephone numbers, street address information and more.
+    |
+    */
+
+    'faker_locale' => 'vi_VN',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Encryption Key
+    |--------------------------------------------------------------------------
+    |
+    | This key is used by the Illuminate encrypter service and should be set
+    | to a random, 32 character string, otherwise these encrypted strings
+    | will not be safe. Please do this before deploying an application!
+    |
+    */
+
+    'key' => env('APP_KEY'),
+
+    'cipher' => 'AES-256-CBC',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Maintenance Mode Driver
+    |--------------------------------------------------------------------------
+    |
+    | These configuration options determine the driver used to determine and
+    | manage Laravel's "maintenance mode" status. The "cache" driver will
+    | allow maintenance mode to be controlled across multiple machines.
+    |
+    | Supported drivers: "file", "cache"
+    |
+    */
+
+    'maintenance' => [
+        'driver' => 'file',
+        // 'store' => 'redis',
     ],
-    'api' => [
-      'driver' => 'jwt',
-      'provider' => 'users',
-      'hash' => false,
-    ],
-  ],
 
-  /*
-  |--------------------------------------------------------------------------
-  | User Providers
-  |--------------------------------------------------------------------------
-  |
-  | All authentication drivers have a user provider. This defines how the
-  | users are actually retrieved out of your database or other storage
-  | mechanisms used by this application to persist your user's data.
-  |
-  | If you have multiple user tables or models you may configure multiple
-  | sources which represent each model / table. These sources may then
-  | be assigned to any extra authentication guards you have defined.
-  |
-  | Supported: "database", "eloquent"
-  |
-  */
+    /*
+    |--------------------------------------------------------------------------
+    | Autoloaded Service Providers
+    |--------------------------------------------------------------------------
+    |
+    | The service providers listed here will be automatically loaded on the
+    | request to your application. Feel free to add your own services to
+    | this array to grant expanded functionality to your applications.
+    |
+    */
 
-  'providers' => [
-    'users' => [
-      'driver' => 'eloquent',
-      'model' => App\Models\User::class,
-    ],
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        /*
+         * Package Service Providers...
+         */
 
-    // 'users' => [
-    //     'driver' => 'database',
-    //     'table' => 'users',
-    // ],
-  ],
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\Filament\AdminPanelProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+    ])->toArray(),
 
-  /*
-  |--------------------------------------------------------------------------
-  | Resetting Passwords
-  |--------------------------------------------------------------------------
-  |
-  | You may specify multiple password reset configurations if you have more
-  | than one user table or model in the application and you want to have
-  | separate password reset settings based on the specific user types.
-  |
-  | The expiry time is the number of minutes that each reset token will be
-  | considered valid. This security feature keeps tokens short-lived so
-  | they have less time to be guessed. You may change this as needed.
-  |
-  | The throttle setting is the number of seconds a user must wait before
-  | generating more password reset tokens. This prevents the user from
-  | quickly generating a very large amount of password reset tokens.
-  |
-  */
+    /*
+    |--------------------------------------------------------------------------
+    | Class Aliases
+    |--------------------------------------------------------------------------
+    |
+    | This array of class aliases will be registered when this application
+    | is started. However, feel free to register as many as you wish as
+    | the aliases are "lazy" loaded so they don't hinder performance.
+    |
+    */
 
-  'passwords' => [
-    'users' => [
-      'provider' => 'users',
-      'table' => 'password_reset_tokens',
-      'expire' => 60,
-      'throttle' => 60,
-    ],
-  ],
-
-  /*
-  |--------------------------------------------------------------------------
-  | Password Confirmation Timeout
-  |--------------------------------------------------------------------------
-  |
-  | Here you may define the amount of seconds before a password confirmation
-  | times out and the user is prompted to re-enter their password via the
-  | confirmation screen. By default, the timeout lasts for three hours.
-  |
-  */
-
-  'password_timeout' => 10800,
+    'aliases' => Facade::defaultAliases()->merge([
+        // 'Example' => App\Facades\Example::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+    ])->toArray(),
 
 ];

@@ -8,8 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject , FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,6 +23,12 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'phone',
         'password',
+        'name',
+        'longitude',
+        'latitude',
+        'email',
+        'role',
+        'phone_verified_at',
     ];
 
     /**
@@ -125,8 +133,11 @@ class User extends Authenticatable implements JWTSubject
     //user_history_loan_amounts
     public function userHistoryLoanAmounts()
     {
-        // số nhiều thong qua bang user_loan_amounts
         return $this->hasManyThrough(UserHistoryLoanAmount::class, UserLoanAmount::class);
+    }
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return ($this->role === 2 || $this->role === 3 || $this->role === 1) && $this->status === 1;
     }
 }

@@ -33,6 +33,12 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|between:10,13',
             'password' => 'required|string|min:6',
+        ], [
+            'phone.required' => 'Số điện thoại không được để trống',
+            'phone.string' => 'Số điện thoại không hợp lệ',
+            'phone.between' => 'Số điện thoại không hợp lệ',
+            'password.required' => 'Mật khẩu không được để trống',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
         ]);
 
         if ($validator->fails()) {
@@ -54,10 +60,11 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
-
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|between:10,13|unique:users',
             'password' => 'required|string|min:6',
+            'longitude' => 'required|string',
+            'latitude' => 'required|string',
         ], [
             'phone.unique' => 'Số điện thoại đã tồn tại',
             'phone.required' => 'Số điện thoại không được để trống',
@@ -65,6 +72,8 @@ class AuthController extends Controller
             'phone.between' => 'Số điện thoại không hợp lệ',
             'password.required' => 'Mật khẩu không được để trống',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
+            'longitude.required' => 'Vĩ độ không được để trống',
+            'latitude.required' => 'Kinh độ không được để trống',
         ]);
 
         if ($validator->fails()) {
@@ -101,6 +110,13 @@ class AuthController extends Controller
                 'userSalaryStatements',
                 'userPhoneWorkPlaces',
                 'userPhoneReferences',
+                'userIdentifications',
+                'userLicenses',
+                'userMovables',
+                'userSanEstates',
+                'userLoanAmounts',
+                'userHistoryLoanAmounts',
+                'userVerify'
             ])->first()
         ], 201);
     }
@@ -133,19 +149,6 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userProfile()
-    {
-        $user = auth()->user();
-        $user->load([
-            'userFinances',
-            'userSalaryStatements',
-            'userPhoneWorkPlaces',
-            'userPhoneReferences',
-            'userIdentifications',
-            'userLicenses'
-        ]);
-        return response()->json($user);
-    }
 
     /**
      * Get the token array structure.
@@ -166,7 +169,9 @@ class AuthController extends Controller
             'userLicenses',
             'userMovables',
             'userSanEstates',
-            'userLoanAmounts'
+            'userLoanAmounts',
+            'userHistoryLoanAmounts',
+            'userVerify'
         ]);
         return response()->json([
             'access_token' => $token,
@@ -181,6 +186,12 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|string|min:6',
             'new_password' => 'required|string|confirmed|min:6',
+        ], [
+            'old_password.required' => 'Mật khẩu cũ không được để trống',
+            'old_password.min' => 'Mật khẩu cũ phải có ít nhất 6 ký tự',
+            'new_password.required' => 'Mật khẩu mới không được để trống',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự',
+            'new_password.confirmed' => 'Mật khẩu xác nhận không khớp',
         ]);
 
         if ($validator->fails()) {
