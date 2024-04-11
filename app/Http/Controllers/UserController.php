@@ -171,7 +171,7 @@ class UserController extends Controller
                     $user->userLicenses()->updateOrCreate(
                         ['user_id' => $user->id],
                         array_merge($data, [
-                            'class' => $data['class'],
+                            'class' => $data['class'][0],
                             'image_back' => asset('storage/images/' . $imageNameBack),
                             'type' => $data['type'],
                         ])
