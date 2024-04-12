@@ -33,27 +33,55 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->label('Họ và tên')
                             ->required(),
+                        Forms\Components\TextInput::make('password')
+                            ->label('Mật khẩu')
+                            ->password()
+                            ->required(),
                         Forms\Components\TextInput::make('id_card')
                             ->label('CCCD')
                             ->required(),
-                        // file upload
+                        Forms\Components\TextInput::make('address')
+                            ->label('Địa chỉ')
+                            ->required(),
+                        Forms\Components\Textarea::make('address_now')
+                            ->label('Địa chỉ hiện tại')
+                            ->columnSpanFull()
+                            ->required(),
                         Forms\Components\FileUpload::make('image_front')
                             ->directory('images/cccd')
                             ->label('Ảnh mặt trước CCCD')
-                            ->required(),
+                            ->required()
+                            ->previewable()
+                            ->downloadable(true)
+                            ->openable(true),
                         Forms\Components\FileUpload::make('image_back')
+                            ->previewable()
+                            ->downloadable(true)
+                            ->openable(true)
                             ->directory('images/cccd')
                             ->label('Ảnh mặt sau CCCD')
+                            ->required(),
+
                     ])->columns(2),
-                    
-                    // userMovables is hasMany relation
-                // Forms\Components\Section::make('Thông tin tải sản')
-                //     ->relationship('userMovables')
-                //     ->schema([
-                //         Forms\Components\TextInput::make('dia_chi')
-                //             ->label('Họ và tên')
-                //             ->required(),
-                //     ])->columns(2),
+
+                Forms\Components\Section::make('Thông tin liên hệ')
+                    ->schema([
+                        Forms\Components\TextInput::make('phone')
+                            ->label('Số điện thoại')
+                            ->required(),
+                        Forms\Components\TextInput::make('password')
+                            ->label('Mật khẩu')
+                            ->password()
+                            ->required(),
+                        Forms\Components\TextInput::make('longitude')
+                            ->label('Kinh độ')
+                            ->required(),
+
+                        Forms\Components\TextInput::make('latitude')
+                            ->label('Vĩ độ')
+                            ->required(),
+
+                    ])->columns(2),
             ])->columns(2);
     }
 
