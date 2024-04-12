@@ -35,8 +35,9 @@ class UserSanEstateRelationManager extends RelationManager
                         Forms\Components\TextInput::make('dia_chi')
                             ->label('Địa chỉ')
                             ->required(),
-                        Forms\Components\FileUpload::make('hinh_anh')->label('Hình ảnh')
+                        Forms\Components\FileUpload::make('imageMovables.image')->label('Hình ảnh')
                             ->directory('images/san_estates')
+                            ->multiple()
                             ->previewable()
                             ->downloadable(true)
                             ->openable(true)

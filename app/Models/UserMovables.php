@@ -27,7 +27,7 @@ class UserMovables extends Model
 
     public function imageMovables()
     {
-        return $this->hasMany(ImageMovable::class);
+        return $this->hasMany(ImageMovable::class, 'user_movables_id', 'id');
     }
 
     public function getHinhAnhAttribute($value)
