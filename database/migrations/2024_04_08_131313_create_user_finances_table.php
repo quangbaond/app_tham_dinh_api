@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('ten_cong_ty')->nullable();
             $table->string('dia_chi_cong_ty')->nullable();
             $table->string('so_dien_thoai_cong_ty')->nullable();
+            $table->string('point')->nullable();
             $table->timestamps();
         });
     }

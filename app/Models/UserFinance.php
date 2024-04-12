@@ -14,5 +14,6 @@ class UserFinance extends Model
         'ten_cong_ty',
         'dia_chi_cong_ty',
         'so_dien_thoai_cong_ty',
+        'point',
     ];
 }

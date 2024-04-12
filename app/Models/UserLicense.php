@@ -21,6 +21,9 @@ class UserLicense extends Model
         'date',
         'place_issue',
         'image_front',
+        'image_font_storage',
         'image_back',
+        'image_back_storage',
+        'point',
     ];
 }

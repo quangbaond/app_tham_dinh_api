@@ -22,13 +22,16 @@ class UserIdentification extends Model
         'issue_date',
         'features',
         'image_front',
+        'image_front_storage',
         'image_back',
+        'image_back_storage',
         'msbhxh',
         'facebook',
         'zalo',
         'address_now',
         'status',
-        'role'
+        'role',
+        'point',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\UserMovableResoucrceResource\RelationManagers\UserMovableRelationManager;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
@@ -26,26 +27,36 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Thông tin người dùng')
-                ->schema([
-                        Forms\Components\TextInput::make('userIdentifications.name')
+                Forms\Components\Section::make('Thông tin pháp lý')
+                    ->relationship('userIdentifications')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
                             ->label('Họ và tên')
                             ->required(),
-                        Forms\Components\TextInput::make('phone')
-                            ->label('Số điện thoại')
-                            ->required(),
-                        Forms\Components\TextInput::make('userIdentifications.id_card')
+                        Forms\Components\TextInput::make('id_card')
                             ->label('CCCD')
                             ->required(),
-                        Forms\Components\Select::make('status_1')
-                            ->label('Trạng thái')
-                            ->options([
-                                0 => 'Chưa thẩm định',
-                                1 => 'Đã thẩm định',
-                            ])
+                        // file upload
+                        Forms\Components\FileUpload::make('image_front')
+                            ->directory('images/cccd')
+                            ->label('Ảnh mặt trước CCCD')
                             ->required(),
-                    ]),
-            ]);
+                        Forms\Components\FileUpload::make('image_back')
+                            ->directory('images/cccd')
+                            ->label('Ảnh mặt sau CCCD')
+                    ])->columns(2),
+                    // userMovables is hasMany relation
+
+
+
+                // Forms\Components\Section::make('Thông tin tải sản')
+                //     ->relationship('userMovables')
+                //     ->schema([
+                //         Forms\Components\TextInput::make('dia_chi')
+                //             ->label('Họ và tên')
+                //             ->required(),
+                //     ])->columns(2),
+            ])->columns(2);
     }
 
     public static function table(Table $table): Table
@@ -72,12 +83,12 @@ class UserResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                    Tables\Filters\SelectFilter::make('status_1')
-                        ->options([
-                            0 => 'Chưa thẩm định',
-                            1 => 'Đã thẩm định',
-                        ])
-                        ->label('Trạng thái'),
+                Tables\Filters\SelectFilter::make('status_1')
+                    ->options([
+                        0 => 'Chưa thẩm định',
+                        1 => 'Đã thẩm định',
+                    ])
+                    ->label('Trạng thái'),
             ], layout: Tables\Enums\FiltersLayout::AboveContent)->filtersFormColumns(2)
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -85,7 +96,7 @@ class UserResource extends Resource
                 Tables\Actions\Action::make('check')
                     ->label('Thẩm định')
                     ->icon('heroicon-o-check-circle')
-                    ->url(fn(User $user) => "/admin/users/{$user->id}/check"),
+                    ->url(fn (User $user) => "/admin/users/{$user->id}/check"),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -97,7 +108,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            UserMovableRelationManager::class,
         ];
     }
 

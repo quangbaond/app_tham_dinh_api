@@ -15,6 +15,8 @@ class UserMovables extends Model
         'dia_chi',
         'hinh_anh',
         'loai_tai_san',
+        'number_movables',
+        'check',
     ];
 
     public function user()

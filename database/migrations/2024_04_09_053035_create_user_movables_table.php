@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('dia_chi')->nullable();
             $table->string('hinh_anh')->nullable();
             $table->string('loai_tai_san')->nullable();
+            $table->string('number_movables')->nullable();
+            $table->boolean('check')->default(false);
+            $table->string('point')->nullable();
             $table->timestamps();
         });
     }

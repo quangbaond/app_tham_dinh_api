@@ -24,7 +24,10 @@ return new class extends Migration
             $table->string('date')->nullable();
             $table->string('place_issue')->nullable();
             $table->string('image_front')->nullable();
+            $table->string('image_front_storage')->nullable();
             $table->string('image_back')->nullable();
+            $table->string('image_back_storage')->nullable();
+            $table->integer('point')->default(0);
             $table->timestamps();
         });
     }

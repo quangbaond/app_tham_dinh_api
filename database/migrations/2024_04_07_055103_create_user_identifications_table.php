@@ -26,11 +26,14 @@ return new class extends Migration
             $table->string('doe')->nullable();
             $table->string('issue_date')->nullable();
             $table->string('image_front')->nullable();
+            $table->string('image_front_storage')->nullable();
             $table->string('image_back')->nullable();
+            $table->string('image_back_storage')->nullable();
             $table->string('facebook')->nullable();
             $table->string('zalo')->nullable();
             $table->string('msbhxh')->nullable();
             $table->tinyInteger('status')->default(0)->comment('0: Chưa thẩm định, 1: Đã thẩm định');
+            $table->integer('point')->default(0);
             $table->timestamps();
         });
     }

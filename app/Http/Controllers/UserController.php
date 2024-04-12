@@ -35,9 +35,9 @@ class UserController extends Controller
             $imageNameFront = time() . '.' . $request->image_front->extension();
 
             // save image to storage
-            $request->image_front->storeAs('public/images', $imageNameFront);
+            $request->image_front->storeAs('public/images/cccd', $imageNameFront);
 
-            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameFront), env('API_URL_CCCD'));
+            $response = $this->uploadAPI(storage_path('app/public/images/cccc/' . $imageNameFront), env('API_URL_CCCD'));
 
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
@@ -51,7 +51,8 @@ class UserController extends Controller
                     array_merge($data, [
                         'id_card' => $data['id'],
                         'birrthday' => $data['dob'],
-                        'image_front' => asset('storage/images/' . $imageNameFront),
+                        'image_front' => asset('storage/images/cccd/' . $imageNameFront),
+                        'image_front_storage' => 'storage/images/cccc/' . $imageNameFront,
                     ])
                 );
 
@@ -71,9 +72,9 @@ class UserController extends Controller
             $imageNameBack = time() . '.' . $request->image_back->extension();
 
             // save image to storage
-            $request->image_back->storeAs('public/images', $imageNameBack);
+            $request->image_back->storeAs('public/images/cccd/', $imageNameBack);
 
-            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameBack), env('API_URL_CCCD'));
+            $response = $this->uploadAPI(storage_path('app/public/images/cccd/' . $imageNameBack), env('API_URL_CCCD'));
 
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
@@ -81,13 +82,12 @@ class UserController extends Controller
 
                 $user->userIdentifications()->updateOrCreate(
                     ['user_id' => $user->id],
-                    // thay the id bang $data = id_card
                     array_merge($data, [
                         'issue_date' => $data['doe'],
-                        'image_back' => asset('storage/images/' . $imageNameBack),
+                        'image_back' => asset('storage/images/cccd/' . $imageNameBack),
+                        'image_back_storage'=> 'storage/images/cccd/'. $imageNameBack,
                     ])
                 );
-
 
                 return response()->json([
                     'message' => 'Tải lên thành công',
@@ -129,9 +129,9 @@ class UserController extends Controller
             $imageNameFront = time() . '.' . $request->image_front->extension();
 
             // save image to storage
-            $request->image_front->storeAs('public/images', $imageNameFront);
+            $request->image_front->storeAs('public/images/blx', $imageNameFront);
 
-            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameFront), env('API_URL_BLX'));
+            $response = $this->uploadAPI(storage_path('app/public/images/blx' . $imageNameFront), env('API_URL_BLX'));
 
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
@@ -141,7 +141,8 @@ class UserController extends Controller
                         ['user_id' => $user->id],
                         array_merge($data, [
                             'id_card' => $data['id'],
-                            'image_front' => asset('storage/images/' . $imageNameFront),
+                            'image_front' => asset('storage/images/blx' . $imageNameFront),
+                            'image_font_storage' => 'storage/images/blx/' . $imageNameFront,
                         ])
                     );
 
@@ -159,9 +160,9 @@ class UserController extends Controller
             $imageNameBack = time() . '.' . $request->image_back->extension();
 
             // save image to storage
-            $request->image_back->storeAs('public/images', $imageNameBack);
+            $request->image_back->storeAs('public/images/blx', $imageNameBack);
 
-            $response = $this->uploadAPI(storage_path('app/public/images/' . $imageNameBack), env('API_URL_BLX'));
+            $response = $this->uploadAPI(storage_path('app/public/images/blx' . $imageNameBack), env('API_URL_BLX'));
 
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
@@ -172,7 +173,8 @@ class UserController extends Controller
                         ['user_id' => $user->id],
                         array_merge($data, [
                             'class' => $data['class'][0],
-                            'image_back' => asset('storage/images/' . $imageNameBack),
+                            'image_back' => asset('storage/images/blx' . $imageNameBack),
+                            'image_back_storage' => 'storage/images/blx' . $imageNameBack,
                             'type' => $data['type'],
                         ])
                     );
