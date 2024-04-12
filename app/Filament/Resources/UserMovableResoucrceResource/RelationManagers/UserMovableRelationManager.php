@@ -69,7 +69,9 @@ class UserMovableRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('loai_tai_san')->label('Loại tài sản'),
                 Tables\Columns\ImageColumn::make('hinh_anh')->label('Hình ảnh')
-                ->limit(1)
+                ->square()
+                ->limitedRemainingText(isSeparate: true)
+                ->limit(3)
                 ->stacked(),
                 Tables\Columns\TextColumn::make('number_movables')->label('Biển số'),
                 Tables\Columns\BooleanColumn::make('check')->label('Trạng thái kiểm tra'),

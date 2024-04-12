@@ -30,11 +30,4 @@ class UserMovables extends Model
     {
         return $this->hasMany(ImageMovable::class, 'user_movables_id', 'id');
     }
-
-    public function getHinhAnhAttribute($value)
-    {
-        return $value ? asset('storage/' . $value) : null;
-    }
-
-    
 }
