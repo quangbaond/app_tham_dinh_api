@@ -35,7 +35,7 @@ class UserSanEstateRelationManager extends RelationManager
                         Forms\Components\TextInput::make('dia_chi')
                             ->label('Địa chỉ')
                             ->required(),
-                        Forms\Components\FileUpload::make('imageMovables.image')->label('Hình ảnh')
+                        Forms\Components\FileUpload::make('imageSanEstates.image')->label('Hình ảnh')
                             ->directory('images/san_estates')
                             ->multiple()
                             ->previewable()
@@ -51,7 +51,7 @@ class UserSanEstateRelationManager extends RelationManager
             ->recordTitleAttribute('title')
             ->columns([
                 Tables\Columns\TextColumn::make('dia_chi')->label('Địa chỉ'),
-                Tables\Columns\ImageColumn::make('hinh_anh')
+                Tables\Columns\ImageColumn::make('imageSanEstates.image')
                 ->stacked()
                 ->limit(3)
                 ->limitedRemainingText(isSeparate: true)

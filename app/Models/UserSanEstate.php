@@ -24,6 +24,6 @@ class UserSanEstate extends Model
 
     public function imageSanEstates()
     {
-        return $this->hasMany(ImageSanEstate::class, 'user_san_estates_id', 'id');
+        return $this->hasMany(ImageSanEstate::class);
     }
 }

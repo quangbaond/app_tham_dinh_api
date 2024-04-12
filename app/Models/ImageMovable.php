@@ -14,4 +14,9 @@ class ImageMovable extends Model
         'user_movables_id',
         'image',
     ];
+
+    public function userMovables()
+    {
+        return $this->belongsTo(UserMovables::class);
+    }
 }
