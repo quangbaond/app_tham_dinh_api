@@ -21,4 +21,9 @@ class UserSanEstate extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function imageSanEstates()
+    {
+        return $this->hasMany(ImageSanEstate::class, 'user_san_estates_id', 'id');
+    }
 }
