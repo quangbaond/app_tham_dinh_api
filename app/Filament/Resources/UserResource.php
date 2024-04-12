@@ -45,10 +45,8 @@ class UserResource extends Resource
                             ->directory('images/cccd')
                             ->label('Ảnh mặt sau CCCD')
                     ])->columns(2),
+                    
                     // userMovables is hasMany relation
-
-
-
                 // Forms\Components\Section::make('Thông tin tải sản')
                 //     ->relationship('userMovables')
                 //     ->schema([
