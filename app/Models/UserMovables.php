@@ -23,4 +23,17 @@ class UserMovables extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+    public function imageMovables()
+    {
+        return $this->hasMany(ImageMovable::class);
+    }
+
+    public function getHinhAnhAttribute($value)
+    {
+        return $value ? asset('storage/' . $value) : null;
+    }
+
+    
 }

@@ -107,6 +107,7 @@ class UserResource extends Resource
     {
         return [
             UserMovableRelationManager::class,
+            UserSanEstateResource\RelationManagers\UserSanEstateRelationManager::class,
         ];
     }
 

@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_san_estates', function (Blueprint $table) {
+        Schema::create('image_movables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('dia_chi')->nullable();
-            $table->string('hinh_anh')->nullable();
-            $table->boolean('check')->default(false);
+            $table->foreignId('user_movable_id')->constrained()->onDelete('cascade');
+            $table->string('image')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_san_estates');
+        Schema::dropIfExists('image_movables');
     }
 };

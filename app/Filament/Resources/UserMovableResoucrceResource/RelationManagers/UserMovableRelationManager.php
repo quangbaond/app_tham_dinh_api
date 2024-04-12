@@ -23,6 +23,12 @@ class UserMovableRelationManager extends RelationManager
     protected static ?string $inverseRelationship = 'section';
     protected static ?string $name = 'Động sản';
 
+    protected static ?string $modelLabel = 'Động sản';
+
+    // edit no data text
+    protected static ?string $noDataMessage = 'Không có dữ liệu';
+
+
 
     public function form(Form $form): Form
     {
@@ -34,19 +40,21 @@ class UserMovableRelationManager extends RelationManager
                     ->label('Loại tài sản')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\FileUpload::make('hinh_anh')->label('Hình ảnh')
+                    Forms\Components\FileUpload::make('imageMovables.image')->label('Hình ảnh')
+                    ->multiple()
                     ->previewable()
                     ->downloadable(true)
                     ->openable(true)
                     ->directory('images/movables'),
                     Forms\Components\TextInput::make('number_movables')->label('Biển số')
-                ])
+                ])->heading('Thêm tài sản')
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
+        // ->heading('Posts')
         ->recordTitle(fn (UserMovables $record): string => "{$record->loai_tai_san} - {$record->number_movables}")
             ->columns([
                 Tables\Columns\TextColumn::make('loai_tai_san')->label('Loại tài sản'),
@@ -63,7 +71,7 @@ class UserMovableRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
+                    // Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('kiểm tra')
@@ -80,7 +88,9 @@ class UserMovableRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Không có dữ liệu')
+            ->emptyStateDescription('Hãy thêm thông tin tài sản');
     }
 
     // edit heading modal

@@ -14,6 +14,7 @@ class UserSanEstate extends Model
         'user_id',
         'dia_chi',
         'hinh_anh',
+        'check'
     ];
 
     public function user()
