@@ -33,15 +33,12 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->label('Họ và tên')
                             ->required(),
-                        Forms\Components\TextInput::make('password')
-                            ->label('Mật khẩu')
-                            ->password()
-                            ->required(),
                         Forms\Components\TextInput::make('id_card')
                             ->label('CCCD')
                             ->required(),
-                        Forms\Components\TextInput::make('address')
+                        Forms\Components\Textarea::make('address')
                             ->label('Địa chỉ')
+                            ->columnSpanFull()
                             ->required(),
                         Forms\Components\Textarea::make('address_now')
                             ->label('Địa chỉ hiện tại')

@@ -35,7 +35,7 @@ class UserSanEstateRelationManager extends RelationManager
                         Forms\Components\TextInput::make('dia_chi')
                             ->label('Địa chỉ')
                             ->required(),
-                        Forms\Components\FileUpload::make('hinh_annh')->label('Hình ảnh')
+                        Forms\Components\FileUpload::make('hinh_anh')->label('Hình ảnh')
                             ->image()
                             ->multiple()
                             ->previewable()
@@ -61,6 +61,7 @@ class UserSanEstateRelationManager extends RelationManager
                     ->limitedRemainingText(isSeparate: true)
                     ->square()
                     ->label('Hình ảnh'),
+                Tables\Columns\BooleanColumn::make('check')->label('Kiểm tra')
             ])
             ->filters([
                 //
