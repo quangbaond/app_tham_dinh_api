@@ -17,6 +17,8 @@ class UserSanEstate extends Model
         'check'
     ];
 
+    protected $casts = ['hinh_anh'=> 'array'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

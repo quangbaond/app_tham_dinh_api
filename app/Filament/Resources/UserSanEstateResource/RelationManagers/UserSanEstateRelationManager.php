@@ -35,12 +35,16 @@ class UserSanEstateRelationManager extends RelationManager
                         Forms\Components\TextInput::make('dia_chi')
                             ->label('Địa chỉ')
                             ->required(),
-                        Forms\Components\FileUpload::make('imageSanEstates.image')->label('Hình ảnh')
-                            ->directory('images/san_estates')
+                        Forms\Components\FileUpload::make('hinh_annh')->label('Hình ảnh')
+                            ->image()
                             ->multiple()
                             ->previewable()
                             ->downloadable(true)
+                            ->reorderable(true)
+                            ->imageEditor(true)
                             ->openable(true)
+                            ->appendFiles(true)
+                            ->directory('images/san_estates')
                     ])
             ]);
     }
@@ -51,12 +55,12 @@ class UserSanEstateRelationManager extends RelationManager
             ->recordTitleAttribute('title')
             ->columns([
                 Tables\Columns\TextColumn::make('dia_chi')->label('Địa chỉ'),
-                Tables\Columns\ImageColumn::make('imageSanEstates.image')
-                ->stacked()
-                ->limit(3)
-                ->limitedRemainingText(isSeparate: true)
-                ->square()
-                ->label('Hình ảnh'),
+                Tables\Columns\ImageColumn::make('hinh_anh')
+                    ->stacked()
+                    ->limit(3)
+                    ->limitedRemainingText(isSeparate: true)
+                    ->square()
+                    ->label('Hình ảnh'),
             ])
             ->filters([
                 //
@@ -70,12 +74,12 @@ class UserSanEstateRelationManager extends RelationManager
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('kiểm tra')
-                    ->requiresConfirmation()
-                    ->action(fn(UserSanEstate $record) => $record->update(['check' => !$record['check']]))
-                    ->modalHeading('Thẩm định')
-                    ->modalDescription('Bạn có chắc chắn đã kiểm tra tài sản này?')
-                    ->modalSubmitActionLabel('Đã kiểm tra')
-                    ->icon('heroicon-o-check-circle')
+                        ->requiresConfirmation()
+                        ->action(fn (UserSanEstate $record) => $record->update(['check' => !$record['check']]))
+                        ->modalHeading('Thẩm định')
+                        ->modalDescription('Bạn có chắc chắn đã kiểm tra tài sản này?')
+                        ->modalSubmitActionLabel('Đã kiểm tra')
+                        ->icon('heroicon-o-check-circle')
                 ])
             ])
             ->bulkActions([

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('dia_chi')->nullable();
-            $table->string('hinh_anh')->nullable();
+            $table->json('hinh_anh')->nullable();
             $table->string('loai_tai_san')->nullable();
             $table->string('number_movables')->nullable();
             $table->boolean('check')->default(false);

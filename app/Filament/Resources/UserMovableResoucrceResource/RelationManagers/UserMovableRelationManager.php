@@ -28,51 +28,45 @@ class UserMovableRelationManager extends RelationManager
     // edit no data text
     protected static ?string $noDataMessage = 'Không có dữ liệu';
 
-    // before create
-    public function beforeCreate (Form $form): void
-    {
-        dd('before create');
-    } 
-
-
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
                 Section::make('Thông tin tài sản')
-                ->schema([
-                    Forms\Components\TextInput::make('loai_tai_san')
-                    ->label('Loại tài sản')
-                    ->required()
-                    ->maxLength(255),
-                    Forms\Components\FileUpload::make('hinh_anh')->label('Hình ảnh')
-                    ->image()
-                    ->multiple()
-                    ->previewable()
-                    ->downloadable(true)
-                    ->openable(true)
-                    ->appendFiles(true)
-                    // hinh_anh là  1 mảng nên cần thêm cast trong model
-                    ->directory('images/movables'),
-                    
-                    Forms\Components\TextInput::make('number_movables')->label('Biển số')
-                ])->heading('Thêm tài sản')
+                    ->schema([
+                        Forms\Components\TextInput::make('loai_tai_san')
+                            ->label('Loại tài sản')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\FileUpload::make('hinh_anh')->label('Hình ảnh')
+                            ->image()
+                            ->multiple()
+                            ->previewable()
+                            ->downloadable(true)
+                            ->reorderable(true)
+                            ->imageEditor(true)
+                            ->openable(true)
+                            ->appendFiles(true)
+                            ->directory('images/movables'),
+
+                        Forms\Components\TextInput::make('number_movables')->label('Biển số')
+                    ])->heading('Thêm tài sản')
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-        // ->heading('Posts')
-        ->recordTitle(fn (UserMovables $record): string => "{$record->loai_tai_san} - {$record->number_movables}")
+            // ->heading('Posts')
+            ->recordTitle(fn (UserMovables $record): string => "{$record->loai_tai_san} - {$record->number_movables}")
             ->columns([
                 Tables\Columns\TextColumn::make('loai_tai_san')->label('Loại tài sản'),
                 Tables\Columns\ImageColumn::make('hinh_anh')->label('Hình ảnh')
-                ->square()
-                ->limitedRemainingText(isSeparate: true)
-                ->limit(3)
-                ->stacked(),
+                    ->square()
+                    ->limitedRemainingText(isSeparate: true)
+                    ->limit(3)
+                    ->stacked(),
                 Tables\Columns\TextColumn::make('number_movables')->label('Biển số'),
                 Tables\Columns\BooleanColumn::make('check')->label('Trạng thái kiểm tra'),
             ])
@@ -89,14 +83,14 @@ class UserMovableRelationManager extends RelationManager
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('kiểm tra')
-                    ->requiresConfirmation()
-                    ->action(fn(UserMovables $record) => $record->update(['check' => !$record['check']]))
-                    ->modalHeading('Thẩm định')
-                    ->modalDescription('Bạn có chắc chắn đã kiểm tra tài sản này?')
-                    ->modalSubmitActionLabel('Đã kiểm tra')
-                    ->icon('heroicon-o-check-circle')
+                        ->requiresConfirmation()
+                        ->action(fn (UserMovables $record) => $record->update(['check' => !$record['check']]))
+                        ->modalHeading('Thẩm định')
+                        ->modalDescription('Bạn có chắc chắn đã kiểm tra tài sản này?')
+                        ->modalSubmitActionLabel('Đã kiểm tra')
+                        ->icon('heroicon-o-check-circle')
                 ])
-               
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
