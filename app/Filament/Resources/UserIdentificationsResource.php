@@ -42,7 +42,6 @@ class UserIdentificationsResource extends Resource
                             ->required(),
                         // file upload
                         Forms\Components\FileUpload::make('image_front')
-                            ->storeFiles(false)
                             ->label('Ảnh CCCD')
                             ->image()
                             ->required(),

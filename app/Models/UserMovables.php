@@ -19,6 +19,8 @@ class UserMovables extends Model
         'check',
     ];
 
+    protected $casts = ['hinh_anh'=> 'array'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -26,7 +28,7 @@ class UserMovables extends Model
 
     public function imageMovables()
     {
-        return $this->hasMany(ImageMovable::class);
+        return $this->hasMany(ImageMovable::class, 'user_movables_id', 'id');
     }
 
     public function getHinhAnhAttribute($value)
