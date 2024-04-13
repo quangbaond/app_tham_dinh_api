@@ -32,7 +32,7 @@ class UserLoanAmountsRelationManager extends RelationManager
                     ->required(),
                 Forms\Components\Select::make('thoi_han_vay')
                     ->label('Thời hạn vay')
-                    ->options(SettingPeriod::pluck('title', 'value')->toArray())
+                    ->options(SettingPeriod::pluck('title', 'id')->toArray())
                     ->required()
             ]);
     }
@@ -116,12 +116,41 @@ class UserLoanAmountsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->after(function ($record) {
+                        $data = $record->toArray();
+                        $khoanvay = $data['khoan_vay'];
+                        $thoihanvay = SettingPeriod::find($data['thoi_han_vay'])->title;
+                        $phantram = SettingPeriod::where('value', $thoihanvay)->first()->value;
+                        $lichtra = $this->tinhlai($khoanvay, $thoihanvay, $phantram);
+                        foreach ($lichtra as $item) {
+                            $record->userHistoryLoanAmounts()->create($item);
+                        }
+                        Notification::make()
+                            ->title('Tạo lịch trả thành công')
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->after(function ($record) {
+                            $data = $record->toArray();
+                            $khoanvay = $data['khoan_vay'];
+                            $thoihanvay = SettingPeriod::find($data['thoi_han_vay'])->title;
+                            $phantram = SettingPeriod::where('value', $thoihanvay)->first()->value;
+                            $lichtra = $this->tinhlai($khoanvay, $thoihanvay, $phantram);
+                            $record->userHistoryLoanAmounts()->delete();
+                            foreach ($lichtra as $item) {
+                                $record->userHistoryLoanAmounts()->create($item);
+                            }
+                            Notification::make()
+                                ->title('Cập nhật lịch trả thành công')
+                                ->success()
+                                ->send();
+                        }),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\Action::make('history')
                         ->label('Lịch sử')
@@ -134,5 +163,36 @@ class UserLoanAmountsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    protected function tinhlai($khoanvay, $thoihanvay, $phantram)
+    {
+        $laixuat = $phantram / 12;
+        $goc = $khoanvay;
+        $thoihan = (int)str_replace(' tháng', '', $thoihanvay);
+        $lichtra = [];
+        $goc_con_lai = $goc;
+        $goc_moi_ky = $goc / $thoihan;
+        $lai = 0;
+        $tong_goc_lai = 0;
+
+        for ($i = 1; $i <= $thoihan; $i++) {
+            $lai = $goc_con_lai * $laixuat / 100;
+            $tong_goc_lai = $goc_moi_ky + $lai;
+            $goc_con_lai = $goc_con_lai - $goc_moi_ky;
+            $date = date('Y-m-d', strtotime("+$i months"));
+            $lichtra[] = [
+                'ngay_tra' => $date,
+                'so_tien_tra' => 0,
+                'so_goc_con_no' => $goc_con_lai,
+                'so_tien_lai' => $lai,
+                'tong_goc_lai' => $tong_goc_lai,
+                'status' => 0,
+                'status_1' => 0,
+                'status_2' => 0,
+                'status_3' => 0,
+            ];
+        }
+        return $lichtra;
     }
 }
