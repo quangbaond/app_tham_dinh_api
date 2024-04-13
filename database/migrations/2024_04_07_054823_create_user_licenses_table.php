@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('image_back')->nullable();
             $table->string('image_back_storage')->nullable();
             $table->integer('point')->default(0);
+            $table->tinyInteger('check')->default(0)->comment('0: Chưa thẩm định, 1: Đã thẩm định');
             $table->timestamps();
         });
     }

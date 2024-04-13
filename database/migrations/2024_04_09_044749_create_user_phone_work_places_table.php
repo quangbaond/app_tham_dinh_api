@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('relationship')->nullable();
+            $table->boolean('check')->default(false);
             $table->timestamps();
         });
     }

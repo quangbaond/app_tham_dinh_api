@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('msbhxh')->nullable();
             $table->tinyInteger('status')->default(0)->comment('0: Chưa thẩm định, 1: Đã thẩm định');
             $table->integer('point')->default(0);
+            $table->tinyInteger('check')->default(0)->comment('0: Chưa kiểm tra, 1: Đã kiểm tra');
             $table->timestamps();
         });
     }

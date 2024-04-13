@@ -14,5 +14,6 @@ class UserPhoneWorkPlace extends Model
         'name',
         'phone',
         'relationship',
+        'check'
     ];
 }

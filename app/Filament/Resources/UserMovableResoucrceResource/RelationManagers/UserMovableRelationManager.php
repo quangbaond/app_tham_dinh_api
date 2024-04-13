@@ -7,6 +7,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -82,13 +83,35 @@ class UserMovableRelationManager extends RelationManager
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\Action::make('kiểm tra')
+                    (
+                        $table->getModel()::withoutGlobalScope(SoftDeletingScope::class)
+                        ->where('check', 0)
+                        ->first()
+                        ? Tables\Actions\Action::make('Kiểm tra')
                         ->requiresConfirmation()
-                        ->action(fn (UserMovables $record) => $record->update(['check' => !$record['check']]))
+                        ->action(function (UserMovables $record) {
+                            $record->update(['check' => !$record->check]);
+                            Notification::make()
+                                ->title('Kiểm tra tài sản')
+                                ->success()
+                                ->send();
+                        })
                         ->modalHeading('Thẩm định')
                         ->modalDescription('Bạn có chắc chắn đã kiểm tra tài sản này?')
-                        ->modalSubmitActionLabel('Đã kiểm tra')
                         ->icon('heroicon-o-check-circle')
+                        : Tables\Actions\Action::make('Bỏ kiểm tra')
+                        ->requiresConfirmation()
+                        ->icon('heroicon-o-x-circle')
+                        ->modalHeading('Bỏ thẩm định')
+                        ->modalDescription('Bạn có chắc chắn muốn bỏ kiểm tra tài sản này?')
+                        ->action(function (UserMovables $record) {
+                            $record->update(['check' => !$record->check]);
+                            Notification::make()
+                                ->title('Bỏ kiểm tra tài sản thành công')
+                                ->success()
+                                ->send();
+                        })
+                    )
                 ])
 
             ])

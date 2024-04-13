@@ -85,7 +85,7 @@ class UserController extends Controller
                     array_merge($data, [
                         'issue_date' => $data['doe'],
                         'image_back' => asset('storage/images/cccd/' . $imageNameBack),
-                        'image_back_storage'=> 'storage/images/cccd/'. $imageNameBack,
+                        'image_back_storage' => 'storage/images/cccd/' . $imageNameBack,
                     ])
                 );
 
@@ -135,22 +135,22 @@ class UserController extends Controller
 
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
-                    $user = User::find($request->user()->id);
+                $user = User::find($request->user()->id);
 
-                    $user->userLicenses()->updateOrCreate(
-                        ['user_id' => $user->id],
-                        array_merge($data, [
-                            'id_card' => $data['id'],
-                            'image_front' => asset('storage/images/blx' . $imageNameFront),
-                            'image_font_storage' => 'storage/images/blx/' . $imageNameFront,
-                        ])
-                    );
+                $user->userLicenses()->updateOrCreate(
+                    ['user_id' => $user->id],
+                    array_merge($data, [
+                        'id_card' => $data['id'],
+                        'image_front' => asset('storage/images/blx' . $imageNameFront),
+                        'image_font_storage' => 'storage/images/blx/' . $imageNameFront,
+                    ])
+                );
 
-                    return response()->json([
-                        'message' => 'Tải lên thành công',
-                        'user' => $user,
-                        'data' => $data
-                    ], 201);
+                return response()->json([
+                    'message' => 'Tải lên thành công',
+                    'user' => $user,
+                    'data' => $data
+                ], 201);
             } else {
                 return response()->json([
                     'message' => 'Tải lên thất bại',
@@ -167,17 +167,17 @@ class UserController extends Controller
             if ($response['errorCode'] === 0) {
                 $data = $response['data'][0];
 
-                    $user = User::find($request->user()->id);
+                $user = User::find($request->user()->id);
 
-                    $user->userLicenses()->updateOrCreate(
-                        ['user_id' => $user->id],
-                        array_merge($data, [
-                            'class' => $data['class'][0],
-                            'image_back' => asset('storage/images/blx' . $imageNameBack),
-                            'image_back_storage' => 'storage/images/blx' . $imageNameBack,
-                            'type' => $data['type'],
-                        ])
-                    );
+                $user->userLicenses()->updateOrCreate(
+                    ['user_id' => $user->id],
+                    array_merge($data, [
+                        'class' => $data['class'][0],
+                        'image_back' => asset('storage/images/blx' . $imageNameBack),
+                        'image_back_storage' => 'storage/images/blx' . $imageNameBack,
+                        'type' => $data['type'],
+                    ])
+                );
             } else {
                 return response()->json([
                     'message' => 'Tải lên thất bại',
@@ -402,8 +402,6 @@ class UserController extends Controller
                         );
                     }
                 }
-
-
             }
         }
 
@@ -441,7 +439,6 @@ class UserController extends Controller
                         );
                     }
                 }
-
             }
         }
 
@@ -461,7 +458,6 @@ class UserController extends Controller
             'message' => 'Cập nhật thành công',
             'user' => $user,
         ], 201);
-
     }
 
     public function createLoanAmount(Request $request)
@@ -507,7 +503,7 @@ class UserController extends Controller
         $phantram = SettingPeriod::where('title', $request->thoi_han_vay)->first()->value;
 
         $lichtra = $this->tinhlai($userLoanAmount->khoan_vay, $userLoanAmount->thoi_han_vay, $phantram);
-        $userLoanAmount->userHistoryLoanAmounts()->createMany($lichtra);
+        $userLoanAmount->userHistoryLoanAmounts()->create($lichtra);
 
         $user->load([
             'userFinances',

@@ -15,6 +15,7 @@ class UserLoanAmount extends Model
         'user_id',
         'khoan_vay',
         'thoi_han_vay',
+        'status',
     ];
 
     public function user()

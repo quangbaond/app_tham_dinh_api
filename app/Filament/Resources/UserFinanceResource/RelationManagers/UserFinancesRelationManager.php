@@ -14,12 +14,11 @@ class UserFinancesRelationManager extends RelationManager
 {
     protected static string $relationship = 'userFinances';
 
-    protected static ?string $title = 'Quản lý tài chính';
+    protected static ?string $title = 'Tài chính';
 
     protected static ?string $lable = 'Tài chính';
 
     protected static ?string $modelLabel = 'Tài chính';
-
 
     public function form(Form $form): Form
     {

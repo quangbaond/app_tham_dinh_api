@@ -25,5 +25,7 @@ class UserLicense extends Model
         'image_back',
         'image_back_storage',
         'point',
+        'status',
+        'check',
     ];
 }

@@ -14,5 +14,6 @@ class UserPhoneReference extends Model
         'phone',
         'relationship',
         'name',
+        'check'
     ];
 }

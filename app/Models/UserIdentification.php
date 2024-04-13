@@ -32,6 +32,7 @@ class UserIdentification extends Model
         'status',
         'role',
         'point',
+        'check',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
