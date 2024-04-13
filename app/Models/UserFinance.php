@@ -15,5 +15,11 @@ class UserFinance extends Model
         'dia_chi_cong_ty',
         'so_dien_thoai_cong_ty',
         'point',
+        'hinh_anh_sao_ke',
+        'check'
+    ];
+
+    protected $casts = [
+        'hinh_anh_sao_ke' => 'array'
     ];
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\UserFinanceResource\RelationManagers\UserFinancesRelationManager;
 use App\Filament\Resources\UserMovableResoucrceResource\RelationManagers\UserMovableRelationManager;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
@@ -133,6 +134,7 @@ class UserResource extends Resource
         return [
             UserMovableRelationManager::class,
             UserSanEstateResource\RelationManagers\UserSanEstateRelationManager::class,
+            UserFinancesRelationManager::class,
         ];
     }
 
