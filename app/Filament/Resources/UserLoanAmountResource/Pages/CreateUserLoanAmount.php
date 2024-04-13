@@ -32,4 +32,35 @@ class CreateUserLoanAmount extends CreateRecord
             ->success()
             ->send();
     }
+
+    protected function tinhlai($khoanvay, $thoihanvay, $phantram)
+    {
+        $laixuat = $phantram / 12;
+        $goc = $khoanvay;
+        $thoihan = (int)str_replace(' tháng', '', $thoihanvay);
+        $lichtra = [];
+        $goc_con_lai = $goc;
+        $goc_moi_ky = $goc / $thoihan;
+        $lai = 0;
+        $tong_goc_lai = 0;
+
+        for ($i = 1; $i <= $thoihan; $i++) {
+            $lai = $goc_con_lai * $laixuat / 100;
+            $tong_goc_lai = $goc_moi_ky + $lai;
+            $goc_con_lai = $goc_con_lai - $goc_moi_ky;
+            $date = date('Y-m-d', strtotime("+$i months"));
+            $lichtra[] = [
+                'ngay_tra' => $date,
+                'so_tien_tra' => 0,
+                'so_goc_con_no' => $goc_con_lai,
+                'so_tien_lai' => $lai,
+                'tong_goc_lai' => $tong_goc_lai,
+                'status' => 0,
+                'status_1' => 0,
+                'status_2' => 0,
+                'status_3' => 0,
+            ];
+        }
+        return $lichtra;
+    }
 }

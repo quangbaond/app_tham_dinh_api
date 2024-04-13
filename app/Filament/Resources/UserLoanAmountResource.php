@@ -36,7 +36,7 @@ class UserLoanAmountResource extends Resource
                 Section::make([
                     Forms\Components\Select::make('user_id')
                         ->label('Người dùng')
-                        ->relationship('user.userIdentifications', 'name')
+                        ->relationship('userIdentifications', 'name')
                         ->required(),
                     Forms\Components\TextInput::make('khoan_vay')
                         ->label('Khoản vay')
@@ -54,7 +54,7 @@ class UserLoanAmountResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.userIdentifications.name')
+                Tables\Columns\TextColumn::make('userIdentifications.name')
                     ->label('Người dùng'),
                 Tables\Columns\TextColumn::make('khoan_vay')
                     ->label('Khoản vay'),

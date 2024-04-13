@@ -27,4 +27,9 @@ class UserLoanAmount extends Model
     {
         return $this->hasMany(UserHistoryLoanAmount::class);
     }
+
+    public function userIdentifications()
+    {
+        return $this->belongsTo(UserIdentification::class, 'user_id');
+    }
 }
