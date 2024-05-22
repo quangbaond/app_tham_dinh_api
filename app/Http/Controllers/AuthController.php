@@ -102,22 +102,25 @@ class AuthController extends Controller
 
         // var_dump($response);
         // exit();
+        auth()->login($user);
+
+        $user->load([
+            'userFinances',
+            'userSalaryStatements',
+            'userPhoneWorkPlaces',
+            'userPhoneReferences',
+            'userIdentifications',
+            'userLicenses',
+            'userMovables',
+            'userSanEstates',
+            'userLoanAmounts',
+            'userHistoryLoanAmounts',
+            'userVerify'
+        ]);
 
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user->with([
-                'userFinances',
-                'userSalaryStatements',
-                'userPhoneWorkPlaces',
-                'userPhoneReferences',
-                'userIdentifications',
-                'userLicenses',
-                'userMovables',
-                'userSanEstates',
-                'userLoanAmounts',
-                'userHistoryLoanAmounts',
-                'userVerify'
-            ])->first()
+            'user' => $user,
         ], 201);
     }
 
@@ -209,7 +212,8 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function me (Request $request) {
+    public function me(Request $request)
+    {
         $user = User::find($request->user()->id);
 
         $user->load([
